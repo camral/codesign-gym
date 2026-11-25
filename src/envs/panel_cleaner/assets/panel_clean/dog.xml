@@ -1,0 +1,120 @@
+<mujoco model="spot">
+  <compiler angle="radian" coordinate="local" inertiafromgeom="true"/>
+
+  <asset>
+    <material name="spot_yellow" rgba="0.96 0.74 0.08 1" metallic="0.15" roughness="0.34" specular="0.4"/>
+    <material name="spot_black" rgba="0.11 0.12 0.14 1" metallic="0.25" roughness="0.45" specular="0.3"/>
+    <material name="spot_dark_metal" rgba="0.22 0.24 0.28 1" metallic="0.65" roughness="0.30" specular="0.5"/>
+    <material name="spot_visor" rgba="0.05 0.06 0.08 1" metallic="0.45" roughness="0.10" specular="0.85"/>
+    <material name="spot_led" rgba="0.15 0.92 0.35 1" emission="0.45" roughness="0.2"/>
+  </asset>
+
+  <default>
+    <joint armature="0.2" damping="3" limited="true"/>
+    <geom conaffinity="0" condim="3" density="300.0" friction="1.1 0.01 0.001" margin="0" solref="0.01 1"/>
+    <default class="visual">
+      <geom group="2" contype="0" conaffinity="0" density="0" mass="0"/>
+    </default>
+    <default class="collision">
+      <geom group="3" conaffinity="0" condim="3" density="0" friction="1.1 0.01 0.001" margin="0" solref="0.01 1" rgba="0.20 0.75 0.35 0.45"/>
+    </default>
+    <default class="thigh">
+      <geom fromto="0 0 0 0 0 -0.34" size="0.085" type="capsule" material="spot_yellow"/>
+    </default>
+    <default class="calf">
+      <geom fromto="0 0 0 0 0 -0.38" size="0.06" type="capsule" material="spot_black"/>
+    </default>
+    <default class="hip_ss">
+      <joint pos="0 0 0" axis="1 0 0" range="-0.7 0.7"/>
+    </default>
+    <default class="hip">
+      <joint pos="0 0 0" axis="0 1 0" range="-1.2 2.6"/>
+    </default>
+    <default class="knee">
+      <joint pos="0 0 0" axis="0 1 0" range="-2.7 -0.2"/>
+    </default>
+  </default>
+
+  <worldbody>
+    <body name="base" pos="0 0 0.511121">
+      <freejoint/>
+      <!-- Explicit Spot slab inertia (1.1 x 0.32 x 0.255 m at 380 kg/m^3), decoupled from visual geoms. -->
+      <inertial pos="0 0 0" mass="34.1088" diaginertia="0.4757 3.6213 3.7294"/>
+
+      <!-- Visual Spot-style chassis (group 2, zero mass/collision overhead). -->
+      <geom name="torso_shell" class="visual" type="box" pos="0 0 0.015" size="0.45 0.155 0.098" material="spot_yellow"/>
+      <geom name="torso_belly" class="visual" type="box" pos="0 0 -0.082" size="0.46 0.140 0.042" material="spot_black"/>
+      <geom name="torso_rail_l" class="visual" type="box" pos="0 0.118 0.118" size="0.40 0.020 0.012" material="spot_dark_metal"/>
+      <geom name="torso_rail_r" class="visual" type="box" pos="0 -0.118 0.118" size="0.40 0.020 0.012" material="spot_dark_metal"/>
+      <geom name="torso_nose" class="visual" type="box" pos="0.495 0 0.005" size="0.055 0.145 0.092" material="spot_black"/>
+      <geom name="torso_visor" class="visual" type="box" pos="0.552 0 0.008" size="0.008 0.112 0.052" material="spot_visor"/>
+      <geom name="torso_led" class="visual" type="box" pos="0.553 0 0.076" size="0.007 0.060 0.009" material="spot_led"/>
+      <geom name="torso_tail" class="visual" type="box" pos="-0.495 0 0.005" size="0.055 0.145 0.092" material="spot_black"/>
+      <geom name="fl_hip_housing" class="visual" type="cylinder" fromto="0.33 0.165 0 0.51 0.165 0" size="0.078" material="spot_dark_metal"/>
+      <geom name="fr_hip_housing" class="visual" type="cylinder" fromto="0.33 -0.165 0 0.51 -0.165 0" size="0.078" material="spot_dark_metal"/>
+      <geom name="bl_hip_housing" class="visual" type="cylinder" fromto="-0.51 0.165 0 -0.33 0.165 0" size="0.078" material="spot_dark_metal"/>
+      <geom name="br_hip_housing" class="visual" type="cylinder" fromto="-0.51 -0.165 0 -0.33 -0.165 0" size="0.078" material="spot_dark_metal"/>
+
+      <!-- Smooth 3-capsule collision envelope (group 3, flush inside the 0.32 m visual width; no hip overlap). -->
+      <geom name="torso_geom" class="collision" type="capsule" fromto="-0.42 0.0 0 0.42 0.0 0" size="0.12"/>
+      <geom name="torso_geom_l" class="collision" type="capsule" fromto="-0.42 0.06 0 0.42 0.06 0" size="0.098"/>
+      <geom name="torso_geom_r" class="collision" type="capsule" fromto="-0.42 -0.06 0 0.42 -0.06 0" size="0.098"/>
+
+      <body name="front_left_leg_offsettable_xyz" pos="0.42 0.17 0">
+        <joint name="fl_hip2" class="hip_ss"/>
+        <joint name="fl_hip" class="hip"/>
+        <geom name="fl_hip_geom" class="thigh"/>
+        <body name="fl_knee_offsettable_xyz" pos="0 0 -0.34">
+          <joint name="fl_knee" class="knee"/>
+          <geom name="fl_knee_geom" class="calf"/>
+        </body>
+      </body>
+      <body name="front_right_leg_offsettable_xyz" pos="0.42 -0.17 0">
+        <joint name="fr_hip2" class="hip_ss"/>
+        <joint name="fr_hip" class="hip"/>
+        <geom name="fr_hip_geom" class="thigh"/>
+        <body name="fr_knee_offsettable_xyz" pos="0 0 -0.34">
+          <joint name="fr_knee" class="knee"/>
+          <geom name="fr_knee_geom" class="calf"/>
+        </body>
+      </body>
+      <body name="back_left_leg_offsettable_xyz" pos="-0.42 0.17 0">
+        <joint name="bl_hip2" class="hip_ss"/>
+        <joint name="bl_hip" class="hip"/>
+        <geom name="bl_hip_geom" class="thigh"/>
+        <body name="bl_knee_offsettable_xyz" pos="0 0 -0.34">
+          <joint name="bl_knee" class="knee"/>
+          <geom name="bl_knee_geom" class="calf"/>
+        </body>
+      </body>
+      <body name="back_right_leg_offsettable_xyz" pos="-0.42 -0.17 0">
+        <joint name="br_hip2" class="hip_ss"/>
+        <joint name="br_hip" class="hip"/>
+        <geom name="br_hip_geom" class="thigh"/>
+        <body name="br_knee_offsettable_xyz" pos="0 0 -0.34">
+          <joint name="br_knee" class="knee"/>
+          <geom name="br_knee_geom" class="calf"/>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <velocity ctrlrange="-6 6" forcerange="-120 120" kv="300" joint="fl_hip2"/>
+    <velocity ctrlrange="-6 6" forcerange="-120 120" kv="300" joint="fl_hip"/>
+    <velocity ctrlrange="-6 6" forcerange="-120 120" kv="300" joint="fl_knee"/>
+    <velocity ctrlrange="-6 6" forcerange="-120 120" kv="300" joint="fr_hip2"/>
+    <velocity ctrlrange="-6 6" forcerange="-120 120" kv="300" joint="fr_hip"/>
+    <velocity ctrlrange="-6 6" forcerange="-120 120" kv="300" joint="fr_knee"/>
+    <velocity ctrlrange="-6 6" forcerange="-120 120" kv="300" joint="bl_hip2"/>
+    <velocity ctrlrange="-6 6" forcerange="-120 120" kv="300" joint="bl_hip"/>
+    <velocity ctrlrange="-6 6" forcerange="-120 120" kv="300" joint="bl_knee"/>
+    <velocity ctrlrange="-6 6" forcerange="-120 120" kv="300" joint="br_hip2"/>
+    <velocity ctrlrange="-6 6" forcerange="-120 120" kv="300" joint="br_hip"/>
+    <velocity ctrlrange="-6 6" forcerange="-120 120" kv="300" joint="br_knee"/>
+  </actuator>
+
+  <keyframe>
+    <key name="init_pos2" qpos="0 0 0.511121   1 0 0 0   0.25 0.8 -1.5   -0.25 0.8 -1.5   0.25 0.8 -1.5   -0.25 0.8 -1.5" ctrl="0 0 0 0 0 0 0 0 0 0 0 0"/>
+  </keyframe>
+</mujoco>

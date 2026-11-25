@@ -1,0 +1,14 @@
+<!-- Default class "small_obj_collision" is defined in small_obj_defaults.xml -->
+<mujoco>
+  <worldbody>
+    <body name="washer" pos="0.39 0.05 0.002" quat="1 0 0 0">
+      <!-- Real-world mass: 0.01105 kg (11.05 g). Sim mass: 1x real. -->
+      <inertial pos="0 0 0" mass="0.01105"
+        fullinertia="7.039600e-07 7.039600e-07 1.394530e-06 0 0 0"/>
+      <freejoint/>
+      <!-- Original single cylinder primitive shape -->
+      <geom name="washer_collision1" class="small_obj_collision" mass="0"
+            type="cylinder" size="0.015 0.0015" pos="0.0 0 0"/>
+    </body>
+  </worldbody>
+</mujoco>

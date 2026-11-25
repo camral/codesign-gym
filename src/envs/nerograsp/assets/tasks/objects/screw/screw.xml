@@ -1,0 +1,21 @@
+<!-- Default class "small_obj_collision" is defined in small_obj_defaults.xml -->
+<mujoco>
+  <asset>
+    <!-- mesh name="screw_cheese_mesh" file="screw_cheese-head_m2-5x30.STL" scale="0.001 0.001 0.001"/ -->
+  </asset>
+
+  <worldbody>
+    <body name="screw" pos="0.39 0.05 0.003" quat="0.7071 0.7071 0 0">
+      <!-- Real-world mass: 0.00097 kg (0.97 g). Sim mass: 1x real. -->
+      <inertial pos="-0.000001 0 0.001742" mass="0.00097"
+        fullinertia="9.286490e-08 9.285430e-08 8.714000e-10 4.200000e-12 5.700000e-12 1.300000e-12"/>
+      <freejoint/>
+      <!-- geom name="screw_visual" type="mesh" mesh="screw_cheese_mesh"
+        contype="0" conaffinity="0" mass="0" rgba="0.7 0.7 0.7 1"/ -->
+      <geom name="screw_collision1" class="small_obj_collision" mass="0"
+        type="cylinder" size="0.0013 0.0148" pos="0.0 0 -0.001"/>
+      <geom name="screw_collision2" class="small_obj_collision" mass="0"
+        type="cylinder" size="0.0022 0.001" pos="0 0 0.0145"/>
+    </body>
+  </worldbody>
+</mujoco>

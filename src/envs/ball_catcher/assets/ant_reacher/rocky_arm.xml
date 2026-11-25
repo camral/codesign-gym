@@ -1,0 +1,101 @@
+<mujoco model="rocky_arm">
+  <compiler angle="degree" inertiafromgeom="true"/>
+
+  <asset>
+    <material name="arm_basalt" rgba="0.46 0.40 0.35 1" metallic="0.05" roughness="0.78" specular="0.16"/>
+    <material name="arm_slate" rgba="0.40 0.35 0.30 1" metallic="0.06" roughness="0.80" specular="0.18"/>
+    <material name="arm_knuckle" rgba="0.54 0.47 0.41 1" metallic="0.05" roughness="0.75" specular="0.16"/>
+  </asset>
+
+  <default>
+    <!-- Realistic arm density (~2 kg per 6-DOF arm) and armature (~0.15 kg*m^2) so reach & counterbalance matter without tipping Rocky at rest -->
+    <joint armature="0.15" damping="1.0" limited="true"/>
+    <geom condim="3" density="12.0" friction="1.0 0.01 0.001" margin="0" solref="0.015 1" material="arm_basalt"/>
+  </default>
+
+  <worldbody>
+    <body name="torso_arm_offsettable_xyz" pos="0 0 0.13">
+      <geom name="base_geom5" fromto="0 0 0 0 0 0.15" size="0.42" type="cylinder" material="arm_slate"/>
+      <body name="cap" pos="0 0 -0.18">
+        <geom name="base_geom2" pos="0 0 0.33" size="0.42 0.42 0.22" type="ellipsoid" material="arm_slate"/>
+      </body>
+
+      <body name="link0" pos="0 0 0.12">
+        <joint name="joint_l0" pos="0 0 0" axis="0 0 1" range="-45 45"/>
+        <geom name="l0_geom" fromto="0 0 0 0.35 0.35 0" size="0.15" type="capsule" contype="0" conaffinity="0" material="arm_basalt"/>
+        <geom name="l0r_geom" fromto="0 0 0 0.35 -0.35 0" size="0.15" type="capsule" contype="0" conaffinity="0" material="arm_basalt"/>
+
+        <!-- Left (catching) arm -->
+        <body name="link2_offsettable_xyz" pos="0.35 0.35 0">
+          <joint name="joint_l2" pos="0 0 0" axis="0 1 0" range="-180 180"/>
+          <joint name="joint_l1" pos="0 0 0" axis="1 0 0" range="-180 180"/>
+          <geom name="l2_geom" fromto="0 0 0 0 0 -0.5" size="0.15" type="capsule" contype="0" conaffinity="0" material="arm_basalt"/>
+          <body name="link3_offsettable_xyz" pos="0 0 -0.5">
+            <joint name="joint_l3" pos="0 0 0" axis="0 1 0" range="-150 150"/>
+            <geom name="l3_geom" fromto="0 0 0 0 0 -0.5" size="0.142" type="capsule" material="arm_slate"/>
+            <body name="link4_offsettable_xyz" pos="0 0 -0.5">
+              <joint name="joint_l4" pos="0 0 0" axis="0 0 1" range="-180 180"/>
+              <geom name="l4_geom" fromto="0 0 0 0 0 -0.1" size="0.15" type="cylinder" material="arm_knuckle"/>
+              <body name="link5" pos="0 0 -0.1">
+                <joint name="joint_l5" pos="0 0 0" axis="0 1 0" range="-90 90"/>
+                <geom name="l5_geom2" pos="0 0 0" size="0.15" type="sphere" contype="0" conaffinity="0" density="0" mass="0" material="arm_knuckle"/>
+                <geom name="l5_geom" fromto="0 0 0 0 0 -0.1" size="0.15" type="cylinder" contype="0" conaffinity="0" material="arm_slate"/>
+                <body name="link6_offsettable_xyz" pos="0 0 -0.1">
+                  <joint name="joint_l6" pos="0 0 0" axis="0 0 1" range="-180 180"/>
+                  <geom name="l6_geom" fromto="0 0 0 0 0 -0.1" size="0.15" type="cylinder" material="arm_knuckle"/>
+                  <site name="arm_tip" pos="0 0 -0.1" quat="0 1 0 0"/>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+
+        <!-- Right (counterbalance) arm -->
+        <body name="link2r_offsettable_xyz" pos="0.35 -0.35 0">
+          <joint name="joint_l2r" pos="0 0 0" axis="0 1 0" range="-180 180"/>
+          <joint name="joint_l1r" pos="0 0 0" axis="1 0 0" range="-180 180"/>
+          <geom name="l2r_geom" fromto="0 0 0 0 0 -0.5" size="0.15" type="capsule" contype="0" conaffinity="0" material="arm_basalt"/>
+          <body name="link3r_offsettable_xyz" pos="0 0 -0.5">
+            <joint name="joint_l3r" pos="0 0 0" axis="0 1 0" range="-150 150"/>
+            <geom name="l3r_geom" fromto="0 0 0 0 0 -0.5" size="0.142" type="capsule" material="arm_slate"/>
+            <body name="link4r_offsettable_xyz" pos="0 0 -0.5">
+              <joint name="joint_l4r" pos="0 0 0" axis="0 0 1" range="-180 180"/>
+              <geom name="l4r_geom" fromto="0 0 0 0 0 -0.1" size="0.15" type="cylinder" material="arm_knuckle"/>
+              <body name="link5r" pos="0 0 -0.1">
+                <joint name="joint_l5r" pos="0 0 0" axis="0 1 0" range="-90 90"/>
+                <geom name="l5r_geom2" pos="0 0 0" size="0.15" type="sphere" contype="0" conaffinity="0" density="0" mass="0" material="arm_knuckle"/>
+                <geom name="l5r_geom" fromto="0 0 0 0 0 -0.1" size="0.15" type="cylinder" contype="0" conaffinity="0" material="arm_slate"/>
+                <body name="link6r_offsettable_xyz" pos="0 0 -0.1">
+                  <joint name="joint_l6r" pos="0 0 0" axis="0 0 1" range="-180 180"/>
+                  <geom name="l6r_geom" fromto="0 0 0 0 0 -0.1" size="0.15" type="cylinder" material="arm_knuckle"/>
+                  <geom name="l6r_geom2" pos="0 0 -0.1" size="0.15" type="sphere" contype="0" conaffinity="0" material="arm_knuckle"/>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <velocity joint="joint_l0" name="act0" kv="200" ctrlrange="-3 3" forcerange="-120 120"/>
+    <velocity joint="joint_l1" name="act1" kv="200" ctrlrange="-3 3" forcerange="-120 120"/>
+    <velocity joint="joint_l2" name="act2" kv="200" ctrlrange="-3 3" forcerange="-120 120"/>
+    <velocity joint="joint_l3" name="act3" kv="200" ctrlrange="-3 3" forcerange="-120 120"/>
+    <velocity joint="joint_l4" name="act4" kv="200" ctrlrange="-3 3" forcerange="-60 60"/>
+    <velocity joint="joint_l5" name="act5" kv="200" ctrlrange="-3 3" forcerange="-60 60"/>
+    <velocity joint="joint_l6" name="act6" kv="200" ctrlrange="-3 3" forcerange="-60 60"/>
+
+    <velocity joint="joint_l1r" name="act1r" kv="200" ctrlrange="-3 3" forcerange="-120 120"/>
+    <velocity joint="joint_l2r" name="act2r" kv="200" ctrlrange="-3 3" forcerange="-120 120"/>
+    <velocity joint="joint_l3r" name="act3r" kv="200" ctrlrange="-3 3" forcerange="-120 120"/>
+    <velocity joint="joint_l4r" name="act4r" kv="200" ctrlrange="-3 3" forcerange="-60 60"/>
+    <velocity joint="joint_l5r" name="act5r" kv="200" ctrlrange="-3 3" forcerange="-60 60"/>
+    <velocity joint="joint_l6r" name="act6r" kv="200" ctrlrange="-3 3" forcerange="-60 60"/>
+  </actuator>
+
+  <keyframe>
+    <key name="init_pos" qpos="0   -2 0.5 -0.5 -1 -0.5 -2.5    -1 -0.5 -0.5 0 -0.5 0" ctrl="0 0 0 0 0 0 0 0 0 0 0 0 0"/>
+  </keyframe>
+</mujoco>

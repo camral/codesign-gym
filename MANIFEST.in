@@ -1,0 +1,4 @@
+include README.md
+include LICENSE
+include mypy-soft.ini
+recursive-include tests *.py *.json

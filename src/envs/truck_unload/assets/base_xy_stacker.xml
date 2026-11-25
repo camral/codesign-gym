@@ -1,0 +1,43 @@
+
+<mujoco model="base">
+  <compiler angle="radian" meshdir="meshes" autolimits="true"/>
+
+  <option integrator="implicitfast" />
+
+  <default>
+    <geom rgba="0.8 0.6 0.4 1"/>
+  </default>
+
+  <asset>
+    <mesh file="padding.stl" name="padding"/>
+  </asset>
+
+  <worldbody>
+    <site name="bounds" type="box" size="1 1 1" pos="-0.5 0 1" group="4" rgba="0.5 0.5 0.5 0.1"/>
+    <body name="base" pos="0 0 0.4">
+      <!-- the padding has extents 0.25 0.225 0.175 -->
+      <joint name="joint_x" type="slide" axis="1 0 0" range="-10 10"/>
+      <joint name="joint_y" type="slide" axis="0 1 0" range="-10 10"/>
+      <joint name="joint_z" type="slide" axis="0 0 1" range="-10 10"/>
+      <joint name="joint_pitch" type="hinge" axis="0 1 0" range="-3.14 3.14"/>
+      <joint name="joint_roll" type="hinge" axis="1 0 0" range="-3.14 3.14"/>
+      <joint name="joint_yaw" type="hinge" axis="0 0 1" range="-3.14 3.14" armature="1"/>
+
+      <geom pos="0 0 -0.155" type="box" size="0.23 0.205 0.155" rgba="0.78 0.80 0.82 1.0" condim="1" priority="100" density="200.0"/>
+      <geom pos="0 0 -0.155" type="box" size="0.25 0.225 0.175" rgba="0.78 0.80 0.82 1.0" condim="1" priority="100" density="200.0" group="3"/>
+      <geom pos="0 0 -0.155" type="mesh" mesh="padding" rgba="0.18 0.20 0.24 1" contype="0" conaffinity="0" group="2" mass="0"/>
+
+      <geom pos="0.19 0.165 -0.32" type="sphere" size="0.05" rgba="0.2 0.2 0.2 1" condim="1" priority="100"/>
+      <geom pos="-0.19 0.165 -0.32" type="sphere" size="0.05" rgba="0.2 0.2 0.2 1" condim="1" priority="100"/>
+      <geom pos="0.19 -0.165 -0.32" type="sphere" size="0.05" rgba="0.2 0.2 0.2 1" condim="1" priority="100"/>
+      <geom pos="-0.19 -0.165 -0.32" type="sphere" size="0.05" rgba="0.2 0.2 0.2 1" condim="1" priority="100"/>
+
+    </body>
+  </worldbody>
+
+  <actuator>
+    <velocity name="joint_x" joint="joint_x" kv="450" ctrlrange="-1 1" forcerange="-600 600" />
+    <velocity name="joint_y" joint="joint_y" kv="450" ctrlrange="-1 1" forcerange="-600 600" />
+    <velocity name="joint_yaw" joint="joint_yaw" kv="25" ctrlrange="-1 1" forcerange="-60 60" />
+  </actuator>
+</mujoco>

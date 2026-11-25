@@ -1,0 +1,20 @@
+<!-- Default class "small_obj_collision" is defined in small_obj_defaults.xml -->
+<mujoco>
+  <asset>
+    <!-- mesh name="set_screw_mesh" file="set_screw_m8x12.STL" scale="0.001 0.001 0.001"/ -->
+  </asset>
+
+  <worldbody>
+    <body name="set_screw" pos="0.39 0.04 0.007" quat="1 0 0 0">
+    <!-- Real-world mass: 0.0029 kg (2.9 g). Sim mass: 1x real. -->
+    <!-- from CAD: intertial pos="-0.0000038 0.000009 -0.0008216 -->
+      <inertial pos="0 0 0" mass="0.0029"
+        fullinertia="3.915709e-08 3.914858e-08 2.022790e-08 -1.680000e-12 -9.870000e-12 4.009000e-11"/>
+      <freejoint/>
+      <!-- geom name="set_screw_visual" type="mesh" mesh="set_screw_mesh"
+        contype="0" conaffinity="0" mass="0" rgba="0.7 0.7 0.7 1"/ -->
+      <geom name="set_screw_collision" class="small_obj_collision" mass="0"
+        type="cylinder" size="0.004 0.006" pos="0.0 0 -0.0005"/>
+    </body>
+  </worldbody>
+</mujoco>

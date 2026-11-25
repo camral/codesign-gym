@@ -1,0 +1,59 @@
+<!-- Default class "small_obj_collision" is defined in small_obj_defaults.xml -->
+<!-- ========================================================================= -->
+<!-- DEBUGGING AND RESOLUTION LOG: t_nut Warp NaN Instability                  -->
+<!-- Problem: The T-Nut consistently triggered NaN explosions in physics caches-->
+<!-- (qacc, efc_force) immediately upon environment initialization at t=0.     -->
+<!--                                                                           -->
+<!-- Debugging Steps:                                                          -->
+<!-- 1) Height and Floor Collision: Raised the spawn height from 0.002 to 0.02 -->
+<!--    to rule out initial penetration edge cases. It still failed.           -->
+<!-- 2) Precision and Inertia: We removed cross-diagonal terms and clamped the -->
+<!--    float32 inertia values. It still failed.                               -->
+<!-- 3) Full Geometry Swap: We swapped the t_nut's geometry with the stable    -->
+<!--    washer model to definitively prove whether the "AdaGO-t_nut" system    -->
+<!--    identifier was breaking elsewhere. It succeeded. The XML was to blame. -->
+<!-- 4) Binary Shape Search: We commented out all shapes except one box. It    -->
+<!--    still failed. Thus, the specific geometry combinations were cleared.   -->
+<!-- 5) Rotational Root Cause: Disabling the body's -90 degree X rotation      -->
+<!--    (quat='0.7071 -0.7071 0 0') entirely fixed the initialization buffers, -->
+<!--    identifying a failure in Warp's orientation inversion calculation for  -->
+<!--    this specific parent-child bounding tree.                              -->
+<!--                                                                           -->
+<!-- The Solution (Static Geometry Transformation):                            -->
+<!-- To bypass this bug while faithfully mimicking a real horizontal T-Nut,    -->
+<!-- the -90 degree X rotation was applied directly to the individual        -->
+<!-- individual components prior to simulation:                                -->
+<!-- - Body base rotation neutralized (quat="1 0 0 0").                        -->
+<!-- - Local geom bounding limits statically swapped (Y and Z lengths flipped) -->
+<!-- - Orientations merged via composition (Q_new = Q_body * Q_geom).        -->
+<!-- - Inertial principal axes migrated to the global frame.                   -->
+<!-- ========================================================================= -->
+
+<mujoco>
+  <asset>
+    <!-- mesh name="t_nut_mesh" file="t_nut_20-series_m3.STL" scale="0.001 0.001 0.001"/ -->
+  </asset>
+
+  <worldbody>
+    <body name="t_nut" pos="0.39 0.048 0.002" quat="1 0 0 0">
+      <!-- Real-world mass: 0.00173 kg (1.73 g). Sim mass: 1x real. -->
+      <inertial pos="0 0 0" mass="0.00173"
+        fullinertia="2.387200e-08 8.998000e-09 2.827700e-08 0 0 0"/>
+      <freejoint/>
+      <!-- geom name="t_nut_visual" type="mesh" mesh="t_nut_mesh"
+        contype="0" conaffinity="0" mass="0" rgba="0.7 0.7 0.7 1"/ -->
+      <geom name="t_nut_collision1" class="small_obj_collision" type="box" size="0.0025 0.006 0.0015" pos="0 -0.0001 0.0005"
+        mass="0" rgba="1 0 0 0.3"/>
+      <geom name="t_nut_collision2" class="small_obj_collision" type="box" size="0.001 0.002 0.006" pos="-0.0018 -0.0001 -0.0005" quat="0.6532815 -0.6532815 0.270598 0.270598"
+        mass="0" rgba="1 0 0 0.3"/>
+      <geom name="t_nut_collision3" class="small_obj_collision" type="box" size="0.001 0.002 0.006" pos="0.0018 -0.0001 -0.0005" quat="0.6532815 -0.6532815 -0.270598 -0.270598"
+        mass="0" rgba="1 0 0 0.3"/>
+      <geom name="t_nut_collision4" class="small_obj_collision" type="box" size="0.0011 0.006 0.0015" pos="0 -0.0001 -0.00114"
+        mass="0" rgba="1 0 0 0.3"/>
+      <geom name="t_nut_collision5" class="small_obj_collision" type="cylinder" size="0.001 0.006" pos="0.003 -0.0001 0.0005" quat="0.70710678 -0.70710678 0 0"
+        mass="0" rgba="1 0 0 0.3"/>
+      <geom name="t_nut_collision6" class="small_obj_collision" type="cylinder" size="0.001 0.006" pos="-0.003 -0.0001 0.0005" quat="0.70710678 -0.70710678 0 0"
+        mass="0" rgba="1 0 0 0.3"/>
+    </body>
+  </worldbody>
+</mujoco>

@@ -1,0 +1,12 @@
+<mujoco>
+  <asset>
+    <material name="cube_mat" rgba="0.88 0.26 0.14 1" metallic="0.05" roughness="0.55" specular="0.25"/>
+  </asset>
+  <worldbody>
+    <body name="set_screw_big" pos="0.39 0.04 0.007" quat="1 0 0 0">
+      <freejoint name="set_screw_freejoint"/>
+      <geom name="set_screw_collision" material="cube_mat" mass="0.1"
+        type="box" size="0.04 0.04 0.04" pos="0.0 0 0"/>
+    </body>
+  </worldbody>
+</mujoco>

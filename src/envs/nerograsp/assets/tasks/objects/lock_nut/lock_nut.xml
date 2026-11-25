@@ -1,0 +1,23 @@
+<!-- Default class "small_obj_collision" is defined in small_obj_defaults.xml -->
+<mujoco>
+  <asset>
+    <!-- mesh name="lock_nut_small_mesh" file="lock-nut_m3x4.STL" scale="0.001 0.001 0.001"/ -->
+  </asset>
+
+  <worldbody>
+    <body name="lock_nut" pos="0.39 0.05 0.003" quat="1 0 0 0">
+      <!-- Real-world mass: 0.00042 kg (0.42 g). Sim mass: 1x real. -->
+      <inertial pos="0 0 -0.00005" mass="0.00042"
+        fullinertia="1.574000e-09 1.574000e-09 2.086000e-09 0 0 0"/>
+      <freejoint/>
+      <!-- geom name="lock_nut_visual" type="mesh" mesh="lock_nut_small_mesh"
+        contype="0" conaffinity="0" mass="0" rgba="0.7 0.7 0.7 1"/ -->
+      <geom name="lock_nut_collision1" class="small_obj_collision" mass="0"
+        type="box" size="0.00275 0.0016 0.002" pos="0.0 0 0"/>
+      <geom name="lock_nut_collision2" class="small_obj_collision" mass="0"
+        type="box" size="0.00275 0.0016 0.002" pos="0.0 0 0" quat="0.8660254 0 0 0.5"/>
+      <geom name="lock_nut_collision3" class="small_obj_collision" mass="0"
+        type="box" size="0.00275 0.0016 0.002" pos="0.0 0 0" quat="0.5 0 0 0.8660254"/>
+    </body>
+  </worldbody>
+</mujoco>

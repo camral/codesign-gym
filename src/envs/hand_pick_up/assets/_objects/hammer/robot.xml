@@ -1,0 +1,13 @@
+<mujoco>
+  <asset>
+    <material name="hammer_wood" rgba="0.58 0.39 0.21 1" metallic="0.02" roughness="0.78" specular="0.12"/>
+    <material name="hammer_steel" rgba="0.30 0.33 0.37 1" metallic="0.65" roughness="0.32" specular="0.55"/>
+  </asset>
+  <worldbody>
+    <body name="hammer" pos="0 0 0" quat="1 0 0 0">
+      <freejoint name="hammer_freejoint"/>
+      <geom material="hammer_wood" mass="0.15" type="cylinder" size="0.02 0.14" pos="0.0 0 0"/>
+      <geom material="hammer_steel" mass="0.3" type="cylinder" size="0.03 0.06" pos="0.0 0 0.14" euler="0 90 0"/>
+    </body>
+  </worldbody>
+</mujoco>

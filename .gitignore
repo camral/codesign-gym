@@ -16,7 +16,7 @@ eggs/
 .eggs/
 lib/
 lib64/
-parts/
+/parts/
 sdist/
 var/
 wheels/
@@ -47,7 +47,6 @@ nosetests.xml
 coverage.xml
 *.cover
 *.py.cover
-*.lcov
 .hypothesis/
 .pytest_cache/
 cover/
@@ -95,7 +94,7 @@ ipython_config.py
 #   install all needed dependencies.
 # Pipfile.lock
 
-# uv
+# UV
 #   Similar to Pipfile.lock, it is generally recommended to include uv.lock in version control.
 #   This is especially recommended for binary packages to ensure reproducibility, and is more
 #   commonly ignored for libraries.
@@ -123,14 +122,13 @@ ipython_config.py
 # pixi.lock
 #   Pixi creates a virtual environment in the .pixi directory, just like venv module creates one
 #   in the .venv directory. It is recommended not to include this directory in version control.
-.pixi/*
-!.pixi/config.toml
+.pixi
 
 # PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
 __pypackages__/
 
 # Celery stuff
-celerybeat-schedule*
+celerybeat-schedule
 celerybeat.pid
 
 # Redis
@@ -159,9 +157,6 @@ ENV/
 env.bak/
 venv.bak/
 
-# Conda environments
-conda-meta/
-
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -169,7 +164,7 @@ conda-meta/
 # Rope project settings
 .ropeproject
 
-# mkdocs/Zensical documentation
+# mkdocs documentation
 /site
 
 # mypy
@@ -200,10 +195,10 @@ cython_debug/
 .abstra/
 
 # Visual Studio Code
-#   Visual Studio Code specific template is maintained in a separate VisualStudioCode.gitignore that
-#   can be found at https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore
-#   and can be added to the global gitignore or merged into this file. However, if you prefer, you
-#   could uncomment the following to ignore the entire vscode folder
+#   Visual Studio Code specific template is maintained in a separate VisualStudioCode.gitignore 
+#   that can be found at https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore
+#   and can be added to the global gitignore or merged into this file. However, if you prefer, 
+#   you could uncomment the following to ignore the entire vscode folder
 # .vscode/
 # Temporary file for partial code execution
 tempCodeRunnerFile.py
@@ -221,3 +216,37 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+.idea
+environment_screenshots
+screenshots
+scripts
+!/soft/scripts/
+!/src/envs/soft_walker/scripts/
+CLAUDE.md
+GYM_MUJOCO_PORT_PLAN.md
+GYM_MUJOCO_PORT_QUESTIONNAIRE.md
+nerograsp_decouple_run.txt
+baseline_figures
+llm_figures
+soft_walker_renders
+baselines_tables.tex
+make_figures.py
+make_llm_figures.py
+make_table.py
+
+# Sphinx docs (generated pages are built from READMEs by docs/conf.py)
+docs/_build/
+docs/_generated/
+docs/envs/pokenv/package/
+soft_walker_renders
+AGENTS.md
+BREAKING_API_CHANGES.csv
+BREAKING_API_CHANGES.md
+RELEASE_EXCLUSIONS.md
+
+# macOS Finder metadata
+.DS_Store
+
+# Tutorial files - no pt files or any folders under runs
+notebooks/runs/*.pt
+notebooks/runs/*/

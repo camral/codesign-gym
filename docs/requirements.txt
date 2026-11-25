@@ -1,0 +1,7 @@
+sphinx==9.0.4
+myst-parser==5.1.0
+furo==2025.12.19
+sphinx-copybutton==0.5.2
+sphinx-design==0.7.0
+gymnasium>=1.0
+numpy>=1.26

@@ -1,0 +1,166 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "codesign-gym"
+version = "0.0.1"
+description = "A gymnasium-like package for co-design problems spanning video games and robotics."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Aviraj Newatia", email = "projectavi.exe@gmail.com" }, { name = "Rika Antonova", email = "rika.antonova@gmail.com" }, { name = "Yordan Tsvetkov" }, { name = "Leonard Pleiss"}]
+keywords = ["co-design", "codesign", "reinforcement-learning", "gymnasium", "robotics"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "gymnasium>=1.2.3",
+    "numpy>=2.0",
+    "scipy>=1.10",
+    "control>=0.10",
+    "cvxpy>=1.4",
+    "matplotlib>=3.6",
+    # Scenario previews use ImageFont.load_default(size=...), added in Pillow 10.1.
+    "pillow>=10.1",
+    "python-microgrid>=1.4",
+    "pandas>=1.5",
+    "mink>=1.3",
+    "mujoco>=4.0",
+    "mujoco-warp>=4.0",
+    "warp-lang>=1.16",
+    "torch>=2.12",
+    "pymeshlab>=2025.7",
+    "trimesh>=4",
+    "vhacdx>=0.0.10",
+    "rtree>=1.4",
+    "embreex>=2.17",
+    "qpsolvers[quadprog]>=4.12",
+    "mobile-env>=2.0",
+    "jumanji>=1.0",
+    "jax>=0.9.0.1",
+    # SoftWalker's default 3D frames (envs/soft_walker/render3d.py over viewer/view_newton.py). Headless Linux needs
+    # EGL (see src/envs/soft_walker/README.md); without an OpenGL context render() falls back to the 2D Pillow view.
+    "newton==0.2.0",
+    "pyglet>=2.1",
+]
+
+[project.optional-dependencies]
+# The Pokemon Showdown env wraps the pokemon-codesign-env package (which bundles Pokemon Showdown +
+# poke-env and its server-owning, process-sharded vectorization). It is not on a public index, so
+# it is pulled straight from git; pip fetches the package and its Showdown submodule source. The
+# Node server still has to be built afterwards with `codesign-gym-install-showdown` (npm + Node >=22
+# cannot come through pip). For local development, an editable checkout overrides this pin:
+# `pip install -e ../pokemon-codesign-env`.
+# Pinned to a commit on gym-integration (team size and episode-statistics fixes); move to a tag or main once merged.
+showdown = [
+    "poke-env>=0.8",
+    "pokemon-codesign-env @ git+https://github.com/camral/pokemon-codesign-env.git@a4a17e0",
+]
+# The F1TENTH vehicle co-design env wraps f1tenth_gym_jax (+ its git-only jax_pf LiDAR
+# ray-marcher). Both are pulled from git. NOTE: f1tenth_gym_jax pins jax<0.8, which conflicts
+# with jumanji's jax>=0.10; the code runs fine on the newer jax, so install these with
+# `--no-deps` (or a uv override) so they coexist with the base jax pin.
+f1tenth = [
+    "jax-pf @ git+https://github.com/hzheng40/jax_pf",
+    "f1tenth_gym_jax @ git+https://github.com/f1tenth/f1tenth_gym_jax",
+]
+# The Shape-shifting Hand envs (rotate_in_hand, hand_pick_up) run on upstream mujoco-warp, but
+# its heightfield collision has two faults they hit: it keeps at most two contacts per pad, since
+# the spread check of contacts 3 and 4 scales with the pad's size, and EPA's side-wall fix-up
+# reports bogus deep contacts for box objects against a pad, which launch them. This extra swaps
+# in mujoco_warp with both fixed: the fork's `integration_gjk_fix` branch (upstream main plus
+# those two fixes), tracked by branch name, not commit. Every env in that environment then runs
+# on it (all of them run unchanged there). With uv, pass `--no-sources`.
+morphhand = ["mujoco-warp @ git+https://github.com/y-tsvetkov/mujoco_warp.git@integration_gjk_fix"]
+# ruff and mypy check the soft_walker package only (see [tool.ruff] and mypy-soft.ini).
+dev = ["pytest>=7", "pytest-cov", "ruff==0.17.0", "mypy==2.4.0"]
+# notebooks/: PPO logs to TensorBoard; the notebook needs a Jupyter kernel.
+tutorial = ["tensorboard>=2.14", "ipykernel>=6"]
+all = ["codesign-gym[showdown,morphhand,dev,tutorial]"]
+
+[project.scripts]
+# Builds the bundled Pokemon Showdown Node server (submodule + npm ci + node build + League
+# formats). Not part of pip install: it needs Node.js >= 22 and npm, so it runs on demand.
+codesign-gym-install-showdown = "codesign_gym.install_showdown:main"
+codesign-gym-install-jax-gpu = "codesign_gym.install_jax_gpu:main"
+
+[project.urls]
+Homepage = "https://github.com/camral/codesign-gym"
+Repository = "https://github.com/camral/codesign-gym"
+
+[tool.setuptools]
+# Wheels carry only the package-data patterns below; MANIFEST.in adds the tests to the sdist.
+include-package-data = false
+
+[tool.setuptools.packages.find]
+where = ["src"]
+# Historical evidence stays in the checkout, outside the installed runtime package.
+exclude = ["envs.soft_walker.handoff*", "envs.soft_walker.runs*"]
+
+[tool.setuptools.package-data]
+"envs.ball_catcher" = ["assets/*/*.xml", "assets/ant_reacher/rocky_textured/*.png"]
+"envs.soft_walker" = [
+    "README.md", "NOTICE.md", "requirements-tested.txt", "docs/*.md", "diagnostics/*.md", "third_party/*.md", "viewer/*.md",
+    "baselines/*.json", "baselines/locomotion/*.json", "baselines/warp_followup/spring_biped/*",
+    "examples/*.py", "examples/scenarios/*/*.json", "examples/terrain_demo/*.json",
+    "viewer/*.py",  # not a package; render3d imports viewer/view_newton.py (and its viewer/recording.py)
+]
+"envs.nerograsp" = [
+    "assets/scenes/*.xml",
+    "assets/tasks/objects/*/*.xml",
+    "assets/tasks/tools/*/*.xml",
+    "assets/tasks/tools/*/parts/*.stl",
+    "assets/tasks/tools/*/parts/*/*.stl",
+    "assets/robots/nero/*.stl",
+    "assets/robots/leap/*.obj",
+    "assets/robots/deformleap/ftip_base/*.stl",
+    "assets/robots/deformleap/ftip_base/*.STL",
+    "assets/robots/deformleap/ftip_deform/variants/*/*.obj",
+    "assets/robots/deformgrip/ftip_base/*.stl",
+    "assets/robots/deformgrip/ftip_deform/*.obj",
+    "*.md",
+]
+"envs.f1tenth" = ["assets/maps/*", "assets/maps/*/*"]
+"envs.panel_cleaner" = ["assets/panel_clean/*.xml", "assets/_common/*.xml", "*.md"]
+"envs.rotate_in_hand" = ["assets/rotate_in_hand/*.xml", "assets/rotate_in_hand/meshes/*.obj", "assets/_common/*.xml", "assets/_objects/*/*.xml"]
+"envs.hand_pick_up" = ["assets/rotate_in_hand/*.xml", "assets/rotate_in_hand/meshes/*.obj", "assets/_common/*.xml", "assets/_objects/*/*.xml"]
+"envs.truck_unload" = ["assets/*.xml", "assets/assets_scara_arm/*.stl", "assets/meshes/*.stl"]
+"envs.half_cheetah" = ["assets/*.xml"]
+"envs.swimmer" = ["assets/*.xml"]
+"envs.hopper" = ["assets/*.xml"]
+"envs.walker2d" = ["assets/*.xml"]
+"envs.ant" = ["assets/*.xml"]
+"envs.humanoid" = ["assets/*.xml"]
+"envs.humanoid_standup" = ["assets/*.xml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["integration: requires real Gymnasium", "slow: compilation-heavy numerical test"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+include = ["**/src/envs/soft_walker/**/*.py", "**/tests/soft_walker/**/*.py", "**/tests/test_soft_walker*.py"]
+extend-exclude = ["**/runs/**", "**/third_party/**", "**/handoff/**", "**/__pycache__/**"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
+# Short anonymous expressions name matrix-free operators and traced loss maps.
+ignore = ["E731"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+
+[tool.ruff.lint.per-file-ignores]
+# Scripts establish their standalone import root before importing the engine.
+"**/src/envs/soft_walker/scripts/*.py" = ["E402"]
+# Canonical diagnostics also support direct-file invocation from a source checkout.
+"**/src/envs/soft_walker/diagnostics/*.py" = ["E402"]
+# Backend tests select optional dependencies before importing their fixtures.
+"**/tests/soft_walker/*.py" = ["E402"]

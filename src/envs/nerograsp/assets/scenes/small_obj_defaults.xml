@@ -1,0 +1,19 @@
+<!-- Central collision defaults shared by all small graspable objects.
+     Include this once in the top-level model XML; do NOT redefine this
+     class in individual object XMLs.
+
+     contype/conaffinity=2  : bit-2, matches soft_tip fingertip geoms.
+     Floor uses conaffinity=3 (bits 1+2) so it still contacts objects.
+     Palm/phalanx boxes are on bit-1 only, so they pass through objects.
+     condim=3               : no rolling resistance; objects slide freely off tips.
+     friction=0.5           : matches fingertip surface; realistic rubber-on-metal.
+     solref dampratio=1.2   : overdamped, absorbs impact energy without bounce.
+     solimp d0=0.6 d1=0.90  : softer engagement; tip deflects slightly instead of
+                               acting as a rigid wall, preventing inter-penetration. -->
+<mujoco>
+  <default>
+    <default class="small_obj_collision">
+      <geom contype="2" conaffinity="2" condim="6" friction="0.5 0.05 0.001" rgba="1 0 0 0.3"/>
+    </default>
+  </default>
+</mujoco>

@@ -1,0 +1,129 @@
+<?xml version="1.0" ?>
+<!-- Generated using onshape-to-robot -->
+<!-- Onshape https://cad.onshape.com/documents/8303f988ec45ec8da60cc487/w/62176c4d677681416c2f2d6a/e/af118faa0538a484d6a2bd05 -->
+<mujoco model="custom_arm_2">
+  <compiler angle="radian" meshdir="assets_scara_arm" autolimits="true"/>
+
+  <option integrator="implicitfast"/>
+
+  <default>
+    <default class="custom_arm_2">
+      <joint frictionloss="0.0" armature="3" damping="0.5"/>
+      <velocity kv="200" ctrlrange="-3 3" forcerange="-60 60"/>
+      <default class="visual">
+        <geom type="mesh" contype="0" conaffinity="0" group="2" mass="0"/>
+      </default>
+      <default class="collision">
+        <geom group="2" margin="0" gap="0"/>
+      </default>
+      <default class="adhesion">
+        <geom group="2" margin="0" gap="0.005"/>
+      </default>
+    </default>
+  </default>
+
+  <worldbody>
+    <site name="bounds" type="box" size="0.3 0.7 0.6" pos="0 0 0.6" group="4" rgba="0.5 0.5 0.5 0.1"/>
+
+    <!-- Link base -->
+    <body name="scara_root" pos="0 0 0" euler="0 0 -1.57079633" childclass="custom_arm_2">
+      <inertial pos="-0.0126186 -0.0128637 0.435924" mass="5" fullinertia="1.81673 1.775 0.0520509 0.00442309 0.0262066 -0.121888"/>
+      <geom name="base1" type="mesh" class="visual" pos="-0.041 0.0105 0.0485" quat="0.5 -0.5 -0.5 -0.5" mesh="base1" material="base_material"/>
+      <geom name="base2" type="mesh" class="visual" pos="-0.041 0.0105 0.0485" quat="0.5 -0.5 -0.5 -0.5" mesh="base2" material="viz_gray" />
+
+      <body name="link0_offsettable" pos="-0.031 0.0105 0">
+        <inertial pos="0 0 0.2915" mass="0.8567" fullinertia="0.0820749 0.0820749 0.00233297 0 0 0"/>
+        <geom name="l0_geom" fromto="0 0 0 0 0 0.383" size="0.035" type="box" material="base_material"/>
+        <site name="upper_stop" pos="0 0 0.383" group="4"/>
+      </body>
+
+      <body name="part_2" pos="0.004 0.0105 0.095" quat="1 0 -0 0" gravcomp="1">
+        <joint axis="0 0 1" name="j1" type="slide" range="0 10" />
+        <inertial pos="0.0125138 -3.8e-11 0.0758248" mass="0.659" fullinertia="0.00178576 0.0012718 0.000612006 1e-12 -3.36924e-05 1e-12"/>
+        <geom type="mesh" class="visual" pos="-0.045 -0 -0.045" quat="0.5 -0.5 -0.5 -0.5" mesh="part_2" material="part_2_material"/>
+        <geom type="mesh" class="visual" pos="0.0475 0 0.024" quat="0.5 -0.5 0.5 -0.5" mesh="servo" material="servo"/>
+        <site name="carriage" pos="-0.035 0 0.1375" group="4"/>
+
+        <body name="link1_bracket" pos="0.0475 0 0.0305" quat="0 -0.707107 -0.707107 0" gravcomp="1">
+          <joint axis="0 0 1" name="j2" type="hinge" range="-1.22 1.22" />
+          <inertial pos="-5.3e-10 0.0695319 0.0146053" mass="0.1" fullinertia="8.66855e-05 1.32767e-05 7.96162e-05 2.12766e-12 0 -2.9126e-07"/>
+          <geom type="mesh" class="visual" pos="0 0 0" quat="0.5 -0.5 0.5 0.5" mesh="bracket" material="viz_red"/>
+          <!-- <geom type="mesh" class="visual" pos="-0 0.1 0.007" quat="0 -0 0.707107 0.707107" mesh="servo" material="servo"/> -->
+
+          <body name="link1_offsettable" pos="0 0.03 0.0145" gravcomp="1">
+            <inertial pos="0 0.05 0" mass="0.1" fullinertia="8.81333e-05 9.6e-06 8.81333e-05 0 0 0"/>
+            <geom type="box" class="collision" fromto="0 0 0 0 0.1 0" size="0.012" material="viz_red"/>
+
+            <body name="link1_servo" pos="0 0.125 -0.0075" gravcomp="1">
+              <inertial pos="0 -0.00130893 0.00014012" mass="0.1" fullinertia="1.68515e-05 1.04193e-05 1.30989e-05 0 0 0"/>
+              <geom type="mesh" class="visual" pos="0 0 0" quat="0 -0 0.707107 0.707107" mesh="servo" material="servo"/>
+
+              <body name="link2_bracket" pos="0 0 -0.0065" quat="1 0 -0 0" gravcomp="1">
+                <joint axis="0 0 1" name="j3" type="hinge" range="0 2.44" />
+                <inertial pos="-5.3e-10 0.0695319 0.0146053" mass="0.1" fullinertia="8.66855e-05 1.32767e-05 7.96162e-05 2.12766e-12 0 -2.9126e-07"/>
+                <geom type="mesh" class="visual" pos="0 0 0" quat="0.5 -0.5 0.5 0.5" mesh="bracket" material="viz_red"/>
+                <!-- <geom type="mesh" class="visual" pos="-0 0.1 0.007" quat="0 0 -0.707107 -0.707107" mesh="servo" material="servo"/> -->
+
+                <body name="link2_offsettable" pos="0 0.03 0.0145" gravcomp="1">
+                  <inertial pos="0 0.05 0" mass="0.1" fullinertia="8.81333e-05 9.6e-06 8.81333e-05 0 0 0"/>
+                  <geom type="box" class="collision" fromto="0 0 0 0 0.1 0" size="0.012" material="viz_red"/>
+
+                  <body name="link2_servo" pos="0 0.125 -0.0075" gravcomp="1">
+                    <inertial pos="0 -0.00130893 0.00014012" mass="0.1" fullinertia="1.68515e-05 1.04193e-05 1.30989e-05 0 0 0"/>
+                    <geom type="mesh" class="visual" pos="0 0 0" quat="0 -0 0.707107 0.707107" mesh="servo" material="servo"/>
+
+
+                    <body name="link3_bracket" pos="0 0 -0.0065" quat="1 0 0 0" gravcomp="1">
+                      <joint axis="0 0 1" name="j4" type="hinge" range="-1.22 1.22" />
+                      <inertial pos="0 0.0304541 0.0145014" mass="0.1" fullinertia="3.02511e-05 3.42325e-05 4.09135e-05 0 0 8.93777e-11"/>
+                      <geom name='ee_geom_2' type="mesh" class="visual" pos="0 0 0" quat="0.5 -0.5 0.5 0.5" mesh="bracket" material="viz_red"/>
+                      <geom name='ee_geom_1' type="box" size="0.03 0.05 0.0075" class="collision" pos="0 0.0375 0.0145" quat="0.5 -0.5 0.5 0.5" material="viz_red"/>
+                      <body name="adhesion_body" pos="0 0.005 0" quat="1 0 0 0" gravcomp="1">
+                        <site group="3" name="arm_tip" pos="0 0.045 0.0145" quat="0 0.707107 0.707107 0"/>
+                        <geom name='grasp_geom_1' type="box" size="0.023 0.02 0.0068" class="adhesion" pos="0.023 0.0375 0.0145" quat="0.5 -0.5 0.5 0.5" material="viz_gray"/>
+                        <geom name='grasp_geom_2' type="box" size="0.023 0.02 0.0068" class="adhesion" pos="-0.023 0.0375 0.0145" quat="0.5 -0.5 0.5 0.5" material="viz_gray"/>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <tendon>
+    <spatial name="l1_travel" limited="true" range="0.01 10">
+      <site site="carriage"/>
+      <site site="upper_stop"/>
+    </spatial>
+  </tendon>
+
+  <asset>
+    <mesh file="part_2.stl" name="part_2"/>
+    <mesh file="base1.stl"/>
+    <mesh file="base2.stl"/>
+    <mesh file="servo.stl"/>
+    <mesh file="bracket.stl"/>
+
+    <material name="base_material" rgba="0.64 0.68 0.72 1" metallic="0.35" roughness="0.40" specular="0.42"/>
+    <material name="part_2_material" rgba="0.20 0.22 0.26 1" metallic="0.25" roughness="0.50" specular="0.30"/>
+    <material name="servo" rgba="0.18 0.20 0.24 1" metallic="0.30" roughness="0.45" specular="0.32"/>
+    <material name="viz_red" rgba="0.86 0.30 0.12 1" metallic="0.14" roughness="0.42" specular="0.35"/>
+    <material name="viz_gray" rgba="0.22 0.24 0.28 1" metallic="0.20" roughness="0.55" specular="0.25"/>
+  </asset>
+  <actuator>
+    <velocity class="custom_arm_2" name="j1" joint="j1" ctrlrange="-0.5 0.5"/>
+    <velocity class="custom_arm_2" name="j2" joint="j2"/>
+    <velocity class="custom_arm_2" name="j3" joint="j3"/>
+    <velocity class="custom_arm_2" name="j4" joint="j4"/>
+    <adhesion name="grasp_act" body="adhesion_body" ctrlrange="0 1" gain="200" forcerange="0 200"/>
+  </actuator>
+
+  <keyframe>
+    <key name="init_pos" qpos="0.0 -0.45 0.9 -0.45"/>
+  </keyframe>
+
+</mujoco>

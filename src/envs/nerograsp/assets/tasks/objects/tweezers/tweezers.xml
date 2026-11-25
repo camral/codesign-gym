@@ -1,0 +1,27 @@
+<!-- Default class "small_obj_collision" is defined in small_obj_defaults.xml -->
+<mujoco>
+  <asset>
+    <!-- mesh name="tweezers_mesh" file="tweezer_v1.STL" scale="0.001 0.001 0.001"/ -->
+  </asset>
+
+  <worldbody>
+    <body name="tweezers" pos="0.39 0.1 0.006" quat="0.5 0.5 0.5 0.5">
+      <!-- Real-world mass: 0.01458 kg (14.58 g). Sim mass: 1x real. -->
+      <inertial pos="-0.05 0 0" mass="0.01458"
+        fullinertia="3.19371e-7 1.2583844e-5 1.2433068e-5 0 0 0"/>
+      <freejoint/>
+      <!-- geom name="tweezers_visual" type="mesh" mesh="tweezers_mesh"
+        contype="0" conaffinity="0" mass="0" rgba="0.7 0.7 0.7 1"/ -->
+      <geom name="tweezers_collision1" class="small_obj_collision" mass="0"
+        type="box" size="0.035 0.005 0.001" pos="-0.09 0.0 0.005" quat="0.9998477 0 0.0174524 0"/>
+      <geom name="tweezers_collision2" class="small_obj_collision" mass="0"
+        type="box" size="0.035 0.005 0.001" pos="-0.09 0.0 -0.005" quat="-0.9998477 0 0.0174524 0"/>
+      <geom name="tweezers_collision3" class="small_obj_collision" mass="0"
+        type="box" size="0.015 0.005 0.001" pos="-0.04 0.0 -0.0026" quat="-0.9990482 0 0.0436194 0"/>
+      <geom name="tweezers_collision4" class="small_obj_collision" mass="0"
+        type="box" size="0.015 0.005 0.001" pos="-0.04 0.0 0.0026" quat="0.9990482 0 0.0436194 0"/>
+      <geom name="tweezers_collision5" class="small_obj_collision" mass="0"
+        type="box" size="0.0126 0.005 0.0015" pos="-0.0125 0 0"/>
+    </body>
+  </worldbody>
+</mujoco>

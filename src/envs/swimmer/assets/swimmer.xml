@@ -1,0 +1,74 @@
+<!-- Swimmer Model — co-design port for codesign-gym.
+
+    Vendored from Gymnasium (gymnasium/envs/mujoco/assets/swimmer.xml, MIT
+    License, © Farama Foundation / OpenAI) and adapted to the codesign-gym
+    "offsettable" contract. The mid and back links already run fromto="0 0 0 ..."
+    from their body origin, so they are made designable simply by renaming their
+    bodies "<name>_offsettable_xy" — their far end can then be moved in the
+    body-frame x/y plane (the swimmer's plane of motion) per world.
+
+    The front link is the planar free root (it carries the slider1/slider2/rot
+    joints and the mid child), so it does not fit the single-geom-from-origin
+    contract and is left fixed in this version (as with HalfCheetah's torso).
+
+    Fluid drag (density/viscosity) is what the swimmer propels against and is
+    simulated by mujoco_warp; the RK4 integrator and all other options are
+    unchanged. inertiafromgeom stays true, so per-link inertia is recomputed by
+    the offsettable kernel from the deformed geometry.
+
+    State-Space: slider1 (x, m), slider2 (y, m), free_body_rot (rad),
+    motor1_rot (rad), motor2_rot (rad), then the five velocities.
+    Actuators: motor1_rot, motor2_rot (hinge torque).
+-->
+<mujoco model="swimmer">
+  <compiler angle="degree" coordinate="local" inertiafromgeom="true"/>
+  <option density="4000" integrator="RK4" timestep="0.01" viscosity="0.1" iterations="30"/>
+  <default>
+    <geom conaffinity="0" condim="1" contype="0" rgba="0.8 0.6 0.4 1"/>
+    <joint armature='0.1'  />
+  </default>
+  <visual>
+    <headlight diffuse="0.52 0.54 0.58" ambient="0.32 0.34 0.38" specular="0.12 0.12 0.12"/>
+    <rgba haze="0.55 0.68 0.82 1"/>
+    <quality shadowsize="2048"/>
+    <map znear="0.01"/>
+  </visual>
+  <asset>
+    <texture type="skybox" builtin="gradient" rgb1="0.72 0.84 0.96" rgb2="0.44 0.60 0.78" width="512" height="512"/>
+    <texture builtin="flat" height="1278" mark="cross" markrgb="1 1 1" name="texgeom" random="0.01" rgb1="0.8 0.6 0.4" rgb2="0.8 0.6 0.4" type="cube" width="127"/>
+    <texture name="texplane" type="2d" builtin="checker" rgb1="0.20 0.30 0.40" rgb2="0.15 0.24 0.34" mark="edge" markrgb="0.26 0.36 0.46" width="256" height="256"/>
+    <material name="MatPlane" texture="texplane" texuniform="true" texrepeat="1.2 1.2" reflectance="0.06" specular="0.12" shininess="0.25"/>
+    <material name="geom" texture="texgeom" texuniform="true"/>
+  </asset>
+  <!-- The floor is enlarged for rendering; pin the stock extent so the camera clip planes stay as before. -->
+  <statistic extent="8" center="0 0 -0.1"/>
+  <worldbody>
+    <light directional="true" diffuse="0.82 0.84 0.86" specular="0.28 0.28 0.30" pos="2 -3 5" dir="-0.35 0.5 -1" castshadow="true"/>
+    <light directional="true" diffuse="0.32 0.36 0.42" specular="0.06 0.06 0.08" pos="-3 2 4" dir="0.5 -0.35 -1" castshadow="false"/>
+    <geom condim="3" material="MatPlane" name="floor" pos="0 0 -0.1" rgba="1 1 1 1" size="1000 1000 0.1" type="plane"/>
+    <!--  ================= SWIMMER ================= /-->
+    <body name="torso" pos="0 0 0">
+      <camera name="track" mode="trackcom" pos="0 -3 3" xyaxes="1 0 0 0 1 1"/>
+      <joint axis="1 0 0" name="slider1" pos="0 0 0" type="slide"/>
+      <joint axis="0 1 0" name="slider2" pos="0 0 0" type="slide"/>
+      <joint axis="0 0 1" name="free_body_rot" pos="0 0 0" type="hinge"/>
+      <!-- Front link (nose) moved whole onto the hub root as a designable child;
+           it was already a separate capsule, so no seam/mass change. -->
+      <body name="front_offsettable_xy" pos="0.5 0 0">
+        <geom density="1000" fromto="0 0 0 1 0 0" name="front_geom" rgba="0.88 0.68 0.40 1" size="0.1" type="capsule"/>
+      </body>
+      <body name="mid_offsettable_xy" pos="0.5 0 0">
+        <geom density="1000" fromto="0 0 0 -1 0 0" rgba="0.80 0.56 0.36 1" size="0.1" type="capsule"/>
+        <joint axis="0 0 1" limited="true" name="motor1_rot" pos="0 0 0" range="-100 100" type="hinge"/>
+        <body name="back_offsettable_xy" pos="-1 0 0">
+          <geom density="1000" fromto="0 0 0 -1 0 0" rgba="0.84 0.46 0.36 1" size="0.1" type="capsule"/>
+          <joint axis="0 0 1" limited="true" name="motor2_rot" pos="0 0 0" range="-100 100" type="hinge"/>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+  <actuator>
+    <motor ctrllimited="true" ctrlrange="-1 1" gear="150.0" joint="motor1_rot"/>
+    <motor ctrllimited="true" ctrlrange="-1 1" gear="150.0" joint="motor2_rot"/>
+  </actuator>
+</mujoco>

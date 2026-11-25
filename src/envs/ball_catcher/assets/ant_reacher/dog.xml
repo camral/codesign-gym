@@ -1,0 +1,101 @@
+<mujoco model="ant">
+  <compiler angle="degree" coordinate="local" inertiafromgeom="true"/>
+
+  <default>
+    <joint armature="1" damping="1" limited="true"/>
+    <geom conaffinity="0" condim="3" density="0.5" friction="1 0.5 0.5" margin="0.01" rgba="0.8 0.6 0.4 1"/>
+    
+    <default class="hip">
+      <geom fromto="0 0 0 0 0 -0.7" size="0.05" type="capsule"/>
+      <joint pos="0 0 0" axis="0 1 0" range="-60 60"/>
+    </default>
+
+    <default class="hip_ss">
+      <joint pos="0 0 0" axis="1 0 0" range="-30 30"/>
+    </default>
+
+    <default class="knee">
+      <geom fromto="0 0 0 0 0 -0.7" size="0.04" type="capsule"/>
+      <joint pos="0 0 0" axis="0 1 0" range="-120 0"/>
+    </default>
+
+  </default>
+
+  <worldbody>
+    <body name="base" pos="0 0 0.8">
+      <freejoint/>
+      <geom name="front_crossbar" fromto="0 -0.3 0 0 0.3 0" size="0.1" type="capsule" density="30"/>
+
+      <body name="front_left_leg" pos="0 0.3 0">
+        <joint name="fl_hip2" class="hip_ss"/>
+        <joint name="fl_hip" class="hip"/>
+        <geom name="fl_hip_geom" class="hip"/>
+        <body name="fl_knee" pos="0 0 -0.7">
+          <joint name="fl_knee" class="knee"/>
+          <geom name="fl_knee_geom" class="knee"/>
+        </body>
+      </body>
+
+      <body name="front_right_leg" pos="0 -0.3 0">
+        <joint name="fr_hip2" class="hip_ss"/>
+        <joint name="fr_hip" class="hip"/>
+        <geom name="fr_hip_geom" class="hip"/>
+        <body name="fr_knee" pos="0 0 -0.7">
+          <joint name="fr_knee" class="knee"/>
+          <geom name="fr_knee_geom" class="knee"/>
+        </body>
+      </body>
+
+      <body name="midbar" pos="0 0 0">
+        <geom name="midbar" fromto="0 0 0 -0.8 0 0" size="0.1" type="capsule" density="0.01"/>
+
+        <body name="back_crossbar" pos="-0.8 0 0">
+          <geom name="back_crossbar" fromto="0 -0.3 0 0 0.3 0" size="0.1" type="capsule" density="0.01"/>
+
+          <body name="back_left_leg" pos="0 0.3 0">
+            <joint name="bl_hip2" class="hip_ss"/>
+            <joint name="bl_hip" class="hip"/>
+            <geom name="bl_hip_geom" class="hip"/>
+            <body name="bl_knee" pos="0 0 -0.7">
+              <joint name="bl_knee" class="knee"/>
+              <geom name="bl_knee_geom" class="knee"/>
+            </body>
+          </body>
+
+          <body name="back_right_leg" pos="0 -0.3 0">
+            <joint name="br_hip2" class="hip_ss"/>
+            <joint name="br_hip" class="hip"/>
+            <geom name="br_hip_geom" class="hip"/>
+            <body name="br_knee" pos="0 0 -0.7">
+              <joint name="br_knee" class="knee"/>
+              <geom name="br_knee_geom" class="knee"/>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <velocity ctrlrange="-6 6" forcerange="-60 60" kv="200" joint="fl_hip2"/>
+    <velocity ctrlrange="-6 6" forcerange="-60 60" kv="200" joint="fl_hip"/>
+    <velocity ctrlrange="-6 6" forcerange="-60 60" kv="200" joint="fl_knee"/>
+
+    <velocity ctrlrange="-6 6" forcerange="-60 60" kv="200" joint="fr_hip2"/>
+    <velocity ctrlrange="-6 6" forcerange="-60 60" kv="200" joint="fr_hip"/>
+    <velocity ctrlrange="-6 6" forcerange="-60 60" kv="200" joint="fr_knee"/>
+
+    <velocity ctrlrange="-6 6" forcerange="-60 60" kv="200" joint="bl_hip2"/>
+    <velocity ctrlrange="-6 6" forcerange="-60 60" kv="200" joint="bl_hip"/>
+    <velocity ctrlrange="-6 6" forcerange="-60 60" kv="200" joint="bl_knee"/>
+
+    <velocity ctrlrange="-6 6" forcerange="-60 60" kv="200" joint="br_hip2"/>
+    <velocity ctrlrange="-6 6" forcerange="-60 60" kv="200" joint="br_hip"/>
+    <velocity ctrlrange="-6 6" forcerange="-60 60" kv="200" joint="br_knee"/>
+  </actuator>
+
+  <keyframe>
+    <key name="init_pos2" qpos="0 0 0.89   1 0 0 0   0 0.97 -2   0 0.97 -2   0 1 -2   0 1 -2" ctrl="0 0 0 0 0 0 0 0 0 0 0 0"/>
+  </keyframe>
+
+</mujoco>

@@ -1,0 +1,21 @@
+<!-- Default class "small_obj_collision" is defined in small_obj_defaults.xml -->
+<mujoco>
+  <worldbody>
+    <body name="spatula" pos="0.39 0.08 0.004" quat="0.5 0.5 0.5 0.5">
+      <!-- Original sim mass: 0.25 kg. Sim mass: 1x real  -->
+      <!-- fullinertia computed from primitives, mass split by volume:
+           V_box=2.1e-6, V_cyl=1.696e-6 → m_box=0.13828, m_cyl=0.11171 kg
+           Body CM at x=-0.01511 (verified from volume-weighted centroid).
+           Box (at x=0.005, dx=0.02011): Ixx=2.5468e-6, Iyy/Izz+=m*dx²=5.5913e-5
+           Cylinder axis=x (at x=-0.04, dx=-0.02489): Ixx_spin=5.027e-7, Iyy/Izz+=m*dx²=6.9219e-5
+           Ixx = 2.5468e-6 + 5.027e-7 = 3.0495e-6
+           Iyy = 1.2627e-5 + 5.5913e-5 + 3.3765e-5 + 6.9219e-5 = 1.71524e-4
+           Izz = 1.0660e-5 + 5.5913e-5 + 3.3765e-5 + 6.9219e-5 = 1.69558e-4 -->
+      <inertial pos="-0.01511 0 0" mass="0.025"
+        fullinertia="3.049500e-07 1.715240e-05 1.695580e-05 0 0 0"/>
+      <freejoint/>
+      <geom name="spatula_collision1" class="small_obj_collision" type="box" size="0.015 0.0025 0.007" pos="0.005 0 0" mass="0"/>
+      <geom name="spatula_collision2" class="small_obj_collision" type="cylinder" size="0.003 0.03" pos="-0.04 0 0" quat="0.7071 0 0.7071 0" mass="0"/>
+    </body>
+  </worldbody>
+</mujoco>

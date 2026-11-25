@@ -1,0 +1,21 @@
+<!-- Default class "small_obj_collision" is defined in small_obj_defaults.xml -->
+<mujoco>
+  <asset>
+    <!-- mesh name="screw_pan_mesh" file="screw_pan_head_m5x50.STL" scale="0.001 0.001 0.001"/ -->
+  </asset>
+
+  <worldbody>
+    <body name="screw_long" pos="0.39 0.05 0.006" quat="0.7071 0.7071 0 0">
+      <!-- Real-world mass: 0.00741 kg (7.41 g). Sim mass: 1x real. -->
+      <inertial pos="0 0 0.003907" mass="0.00741"
+        fullinertia="2.113868e-06 2.113882e-06 3.329470e-08 3.700000e-12 -1.700000e-12 4.610000e-11"/>
+      <freejoint/>
+      <!-- geom name="screw_visual" type="mesh" mesh="screw_pan_mesh"
+        contype="0" conaffinity="0" mass="0" rgba="0.7 0.7 0.7 1"/ -->
+      <geom name="screw_long_collision1" class="small_obj_collision" mass="0"
+        type="cylinder" size="0.003 0.026" pos="0.0 0 -0.001"/>
+      <geom name="screw_long_collision2" class="small_obj_collision" mass="0"
+        type="cylinder" size="0.005 0.0017" pos="0 0 0.0248"/>
+    </body>
+  </worldbody>
+</mujoco>

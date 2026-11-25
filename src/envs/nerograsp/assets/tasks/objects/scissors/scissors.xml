@@ -1,0 +1,29 @@
+<!-- Default class "small_obj_collision" is defined in small_obj_defaults.xml -->
+<mujoco>
+  <asset>
+    <!-- mesh name="scissors_mesh" file="flat-scissor_real.STL" scale="0.001 0.001 0.001"/ -->
+  </asset>
+
+  <worldbody>
+    <body name="scissors" pos="0.39 0.05 0.003" quat="0.5 0.5 0.5 0.5">
+      <!-- Real-world mass: 0.025 kg (25 g). Sim mass: 1x real. -->
+      <inertial pos="0 0 0" mass="0.025"
+        fullinertia="4.31514e-6 3.267583e-5 2.842394e-5 -3.4731e-7 3e-12 -2e-12"/>
+      <freejoint/>
+      <!-- geom name="scissors_visual" type="mesh" mesh="scissors_mesh"
+        contype="0" conaffinity="0" mass="0" rgba="0.7 0.7 0.7 1"/ -->
+      <geom name="scissors_collision1" class="small_obj_collision" mass="0"
+        type="cylinder" size="0.012 0.002" pos="0.029 0 0.019" quat="0.707 0.707 0 0"/>
+      <geom name="scissors_collision2" class="small_obj_collision" mass="0"
+        type="cylinder" size="0.012 0.002" pos="0.029 0 -0.019" quat="0.707 0.707 0 0"/>
+      <geom name="scissors_collision3" class="small_obj_collision" mass="0"
+        type="cylinder" size="0.003 0.02" pos="0.02 0 0" quat="0 0.7071 0.7071 0"/>
+      <geom name="scissors_collision4" class="small_obj_collision" mass="0"
+        type="cylinder" size="0.002 0.033" pos="-0.015 0 -0.002" quat="0.688 0 0.726 0"/>
+      <geom name="scissors_collision5" class="small_obj_collision" mass="0"
+        type="cylinder" size="0.002 0.033" pos="-0.015 0 0.002" quat="0.727 0 0.686 0"/>
+      <geom name="scissors_collision6" class="small_obj_collision" mass="0"
+        type="cylinder" size="0.002 0.015" pos="-0.0625 0 0" quat="0.7071 0 0.7071 0"/>
+    </body>
+  </worldbody>
+</mujoco>

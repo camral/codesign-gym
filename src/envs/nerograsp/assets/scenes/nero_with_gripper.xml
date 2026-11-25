@@ -1,0 +1,120 @@
+<mujoco model="nero">
+  <compiler angle="radian" autolimits="true" meshdir="../"/>
+
+  <size njmax="256" nconmax="64"/>
+  <option integrator="implicitfast" cone="elliptic" impratio="2" timestep="0.005" gravity="0 0 -9.81">
+    <flag multiccd="disable"/>
+  </option>
+
+  <default>
+    <default class="gripper_geom">
+      <geom priority="100" solref="0.01 1" solimp="0.5 0.95 0.001 0.95 100" friction="0.5"/>
+    </default>
+  </default>
+
+  <asset>
+    <mesh name="nero_base_link" content_type="model/stl" file="robots/nero/nero_base_link.stl"/>
+    <mesh name="nero_link1" content_type="model/stl" file="robots/nero/nero_link1.stl"/>
+    <mesh name="nero_link2" content_type="model/stl" file="robots/nero/nero_link2.stl"/>
+    <mesh name="nero_link3" content_type="model/stl" file="robots/nero/nero_link3.stl"/>
+    <mesh name="nero_link4" content_type="model/stl" file="robots/nero/nero_link4.stl"/>
+    <mesh name="nero_link5" content_type="model/stl" file="robots/nero/nero_link5.stl"/>
+    <mesh name="nero_link6" content_type="model/stl" file="robots/nero/nero_link6.stl"/>
+    <mesh name="nero_link7" content_type="model/stl" file="robots/nero/nero_link7.stl"/>
+    <mesh name="nero_gripper_flange" content_type="model/stl" file="robots/nero/nero_gripper_flange.stl"/>
+    <mesh name="nero_gripper_base" content_type="model/stl" file="robots/nero/nero_gripper_base.stl"/>
+    <mesh name="nero_fingertip_base" content_type="model/stl" file="robots/deformgrip/ftip_base/grip_fingertip_base.stl"/>
+    <mesh name="nero_fingertip_left_tip" file="robots/deformgrip/ftip_deform/grip_fingertip_tip.obj"/>
+    <mesh name="nero_fingertip_right_tip" file="robots/deformgrip/ftip_deform/grip_fingertip_tip.obj"/>
+  </asset>
+
+  <worldbody>
+    <!-- Nero hard-codes forward as -X, so we rotate the arm 180 deg around Z axis -->
+    <!-- For controlling the real robot we will use an adapter. -->
+    <body name="nero_base" pos="0 0 0">
+      <geom type="mesh" mesh="nero_base_link"/>
+      <body name="nero_link1" pos="0 0 0.138">
+        <inertial pos="-0.000768106 -5.71803e-05 -0.00686373" quat="0.998496 0.0243284 -0.0474034 0.0129308" mass="0.767105" diaginertia="0.000668361 0.000545022 0.000513619"/>
+        <joint name="nero_joint1" pos="0 0 0" axis="0 0 1" range="-2.70526 2.70526" />
+        <geom type="mesh" mesh="nero_link1"/>
+        <body name="nero_link2" quat="1.89469e-08 1.89469e-08 0.707107 -0.707107">
+          <inertial pos="0.000796867 -0.0789033 0.00111849" quat="0.724173 0.689546 -0.00281155 -0.00963045" mass="0.693819" diaginertia="0.00201137 0.00182229 0.000632162"/>
+          <joint name="nero_joint2" pos="0 0 0" axis="0 0 1" range="-1.74 1.74" />
+          <geom type="mesh" mesh="nero_link2"/>
+          <body name="nero_link3" pos="0 -0.31 0" quat="-1.37922e-08 1.37922e-08 -0.707107 0.707107">
+            <inertial pos="0.000145134 -0.00121379 -0.0486114" quat="0.999978 -0.00572699 -0.000503892 -0.00336231" mass="0.672465" diaginertia="0.0034323 0.00338703 0.000288126"/>
+            <joint name="nero_joint3" pos="0 0 0" axis="0 0 1" range="-2.75 2.75" />
+            <geom type="mesh" mesh="nero_link3"/>
+            <body name="nero_link4" quat="-1.37922e-08 1.37922e-08 -0.707107 0.707107">
+              <inertial pos="-0.000313346 -0.0567519 0.000760561" quat="0.743967 0.668141 -0.00555621 -0.00837616" mass="0.484514" diaginertia="0.000503972 0.000403451 0.00023296"/>
+              <joint name="nero_joint4" pos="0 0 0" axis="0 0 1" range="-1.01 2.14" />
+              <geom type="mesh" mesh="nero_link4"/>
+              <body name="nero_link5" pos="0 -0.27001 0" quat="0.5 0.5 -0.5 0.5">
+                <inertial pos="0.00265591 0.00201196 -0.116209" quat="0.994383 -0.0299767 0.0135244 0.100607" mass="0.583684" diaginertia="0.000897188 0.000859677 0.000214923"/>
+                <joint name="nero_joint5" pos="0 0 0" axis="0 0 1" range="-2.75 2.75" />
+                <geom type="mesh" mesh="nero_link5"/>
+                <body name="nero_link6" quat="0.5 0.5 -0.5 0.5">
+                  <inertial pos="9.50151e-05 0.00107831 -0.00019111" quat="0.708463 0.705104 -0.0268147 0.0137484" mass="0.314041" diaginertia="6.02857e-05 5.75589e-05 4.69904e-05"/>
+                  <joint name="nero_joint6" pos="0 0 0" axis="0 0 1" range="-0.73 0.95" />
+                  <geom type="mesh" mesh="nero_link6"/>
+                  <body name="nero_link7" pos="0 -0.0235 0" quat="0.707107 0.707107 0 0">
+                    <site pos=".105 0 -0.0235" axisangle="0 1 0 0" name="nero_ee_site" rgba=".2 .2 1 1" /> <!-- this is what is being tracked, offset this one! -->
+                    <inertial pos="0.0334426 0.00319745 0.00506603" quat="0.515963 0.52091 0.390879 0.556462" mass="0.497712" diaginertia="0.00106912 0.000845049 0.000513009"/>
+                    <joint name="nero_joint7" pos="0 0 0" axis="0 0 1" range="-1.5708 1.5708" />
+                    <geom type="mesh" mesh="nero_link7"/>
+                    <geom pos="0.032 0 -0.0235" quat="0.499998 -0.5 0.500002 -0.5" type="mesh" mesh="nero_gripper_flange"/>
+                    <geom pos="0.0375 -2.02026e-08 -0.0235" quat="0.499998 -0.5 0.500002 -0.5" type="mesh" mesh="nero_gripper_base"/>
+                    <body name="nero_gripper_link1" pos="0.1453 -5.19024e-07 -0.03034738" quat="0.5 0.5 0.5 -0.5">
+                      <inertial pos="0.000651232 -0.049193 0.00972259" quat="0.477798 0.572974 -0.518028 0.418398" mass="0.025" diaginertia="7.74531e-05 7.36783e-05 5.0886e-06"/>
+                      <joint name="nero_gripper_joint1" pos="0 0 0" axis="1 0 0" type="slide" range="0 0.039"/>
+                      <body name="nero_gripper_link1_tip">
+                        <geom type="mesh" mesh="nero_fingertip_base" class="gripper_geom"/>
+                        <geom type="mesh" mesh="nero_fingertip_left_tip" rgba=".7 .2 .2 1" class="gripper_geom"/>
+                      </body>
+                    </body>
+                    <body name="nero_gripper_link2" pos="0.1453 -5.19024e-07 -0.01665362" quat="0.5 -0.5 -0.5 -0.5">
+                      <inertial pos="0.000651232 -0.049193 0.00972259" quat="0.477798 0.572974 -0.518028 0.418398" mass="0.025" diaginertia="7.74531e-05 7.36783e-05 5.0886e-06"/>
+                      <joint name="nero_gripper_joint2" pos="0 0 0" axis="-1 0 0" type="slide" range="-0.039 0"/>
+                      <body name="nero_gripper_link2_tip">
+                        <geom type="mesh" mesh="nero_fingertip_base" class="gripper_geom"/>
+                        <geom type="mesh" mesh="nero_fingertip_right_tip" rgba=".2 .2 .7 1" class="gripper_geom"/>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+
+  <actuator>
+    <position name="nero_act1" joint="nero_joint1" ctrlrange="-2.70526 2.70526" forcerange="-32 32" kp="100" kv="10" />
+    <position name="nero_act2" joint="nero_joint2" ctrlrange="-1.74 1.74" forcerange="-32 32" kp="200" dampratio="1" />
+    <position name="nero_act3" joint="nero_joint3" ctrlrange="-2.75 2.75" forcerange="-32 32" kp="100" kv="10" />
+    <position name="nero_act4" joint="nero_joint4" ctrlrange="-1.01 2.14" forcerange="-32 32" kp="200" dampratio="1" />
+    <position name="nero_act5" joint="nero_joint5" ctrlrange="-2.75 2.75" forcerange="-8 8" kp="20" kv="1" />
+    <position name="nero_act6" joint="nero_joint6" ctrlrange="-0.73 0.95" forcerange="-8 8" kp="20" dampratio="1" />
+    <position name="nero_act7" joint="nero_joint7" ctrlrange="-1.5708 1.5708" forcerange="-8 8" kp="20" dampratio="1" />
+    <position name="nero_gripper" joint="nero_gripper_joint1" ctrlrange="0 0.039" forcerange="-40 40" kp="200" dampratio="1" />
+  </actuator>
+
+  <equality>
+    <joint joint1="nero_gripper_joint1" joint2="nero_gripper_joint2" polycoef="0 -1 0 0 0" solimp="0.998 0.998 0.001 0.5 2" solref="0.01 1"/>
+  </equality>
+
+  <contact>
+    <exclude body1="nero_base" body2="nero_link1"/>
+    <exclude body1="nero_link5" body2="nero_link7"/>
+  </contact>
+
+  <!-- home_bent_elbow is for mink to bend the elbow in the correct direction via a posture task -->
+  <keyframe>
+    <key name="home" qpos="0 0 0 0 0 0 0 0 0" ctrl="0 0 0 0 0 0 0 0" />
+    <key name="home_bent_elbow" qpos="0 0 0 0.1 0 0 -0.1 0" ctrl="0 0 0 0 0 0 0 0" />
+  </keyframe>
+
+</mujoco>

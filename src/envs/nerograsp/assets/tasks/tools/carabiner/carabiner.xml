@@ -1,0 +1,81 @@
+<?xml version="1.0" ?>
+<!-- Generated using onshape-to-robot -->
+<mujoco model="carabiner_d_60mm">
+  <compiler angle="radian" meshdir="parts" autolimits="true"/>
+  <default>
+    <default class="empty"/>
+    <default class="carabiner_d_60mm">
+      <default class="carabiner_visual">
+        <geom type="mesh" contype="0" conaffinity="0" group="2"/>
+      </default>
+      <default class="carabiner_collision">
+        <geom group="3"/>
+      </default>
+    </default>
+  </default>
+  <worldbody>
+    <!-- Link link_bracket -->
+    <body name="link_bracket" pos="-0.36 0.0 0.005" quat="0 0 0 1" childclass="carabiner_d_60mm">
+      <freejoint name="link_bracket_freejoint"/>
+      <inertial pos="-0.0111265 0.0134969 9.0292e-08" mass="0.0681253" fullinertia="5.916e-06 2.59125e-05 3.1584e-05 2.3672e-06 2e-11 1e-11"/>
+      <!-- Part link_bracket -->
+      <geom type="mesh" class="carabiner_visual" pos="-0.0160368 0.0340087 0" quat="0.992208 0 0 -0.124594" mesh="link_bracket_00000" material="link_bracket_00000_material" name="carabiner_link_bracket_00000_vis"/>
+      <geom type="mesh" class="carabiner_collision" pos="-0.0160368 0.0340087 0" quat="0.992208 0 0 -0.124594" mesh="link_bracket_00000" material="link_bracket_00000_material" name="carabiner_link_bracket_00000_col"/>
+      <geom type="mesh" class="carabiner_visual" pos="-0.0160368 0.0340087 0" quat="0.992208 0 0 -0.124594" mesh="link_bracket_00001" material="link_bracket_00001_material" name="carabiner_link_bracket_00001_vis"/>
+      <geom type="mesh" class="carabiner_collision" pos="-0.0160368 0.0340087 0" quat="0.992208 0 0 -0.124594" mesh="link_bracket_00001" material="link_bracket_00001_material" name="carabiner_link_bracket_00001_col"/>
+      <geom type="mesh" class="carabiner_visual" pos="-0.0160368 0.0340087 0" quat="0.992208 0 0 -0.124594" mesh="link_bracket_00002" material="link_bracket_00002_material" name="carabiner_link_bracket_00002_vis"/>
+      <geom type="mesh" class="carabiner_collision" pos="-0.0160368 0.0340087 0" quat="0.992208 0 0 -0.124594" mesh="link_bracket_00002" material="link_bracket_00002_material" name="carabiner_link_bracket_00002_col"/>
+      <geom type="mesh" class="carabiner_visual" pos="-0.0160368 0.0340087 0" quat="0.992208 0 0 -0.124594" mesh="link_bracket_00003" material="link_bracket_00003_material" name="carabiner_link_bracket_00003_vis"/>
+      <geom type="mesh" class="carabiner_collision" pos="-0.0160368 0.0340087 0" quat="0.992208 0 0 -0.124594" mesh="link_bracket_00003" material="link_bracket_00003_material" name="carabiner_link_bracket_00003_col"/>
+      <geom type="mesh" class="carabiner_visual" pos="-0.0160368 0.0340087 0" quat="0.992208 0 0 -0.124594" mesh="link_bracket_00004" material="link_bracket_00004_material" name="carabiner_link_bracket_00004_vis"/>
+      <geom type="mesh" class="carabiner_collision" pos="-0.0160368 0.0340087 0" quat="0.992208 0 0 -0.124594" mesh="link_bracket_00004" material="link_bracket_00004_material" name="carabiner_link_bracket_00004_col"/>
+      <geom type="mesh" class="carabiner_visual" pos="-0.0160368 0.0340087 0" quat="0.992208 0 0 -0.124594" mesh="link_bracket_00005" material="link_bracket_00005_material" name="carabiner_link_bracket_00005_vis"/>
+      <geom type="mesh" class="carabiner_collision" pos="-0.0160368 0.0340087 0" quat="0.992208 0 0 -0.124594" mesh="link_bracket_00005" material="link_bracket_00005_material" name="carabiner_link_bracket_00005_col"/>
+      <geom type="mesh" class="carabiner_visual" pos="-0.0160368 0.0340087 0" quat="0.992208 0 0 -0.124594" mesh="link_bracket_00006" material="link_bracket_00006_material" name="carabiner_link_bracket_00006_vis"/>
+      <geom type="mesh" class="carabiner_collision" pos="-0.0160368 0.0340087 0" quat="0.992208 0 0 -0.124594" mesh="link_bracket_00006" material="link_bracket_00006_material" name="carabiner_link_bracket_00006_col"/>
+      <geom type="mesh" class="carabiner_visual" pos="-0.0160368 0.0340087 0" quat="0.992208 0 0 -0.124594" mesh="link_bracket_00007" material="link_bracket_00007_material" name="carabiner_link_bracket_00007_vis"/>
+      <geom type="mesh" class="carabiner_collision" pos="-0.0160368 0.0340087 0" quat="0.992208 0 0 -0.124594" mesh="link_bracket_00007" material="link_bracket_00007_material" name="carabiner_link_bracket_00007_col"/>
+      <geom type="mesh" class="carabiner_visual" pos="-0.0160368 0.0340087 0" quat="0.992208 0 0 -0.124594" mesh="link_bracket_00008" material="link_bracket_00008_material" name="carabiner_link_bracket_00008_vis"/>
+      <geom type="mesh" class="carabiner_collision" pos="-0.0160368 0.0340087 0" quat="0.992208 0 0 -0.124594" mesh="link_bracket_00008" material="link_bracket_00008_material" name="carabiner_link_bracket_00008_col"/>
+      <geom type="mesh" class="carabiner_visual" pos="-0.0160368 0.0340087 0" quat="0.992208 0 0 -0.124594" mesh="link_bracket_00009" material="link_bracket_00009_material" name="carabiner_link_bracket_00009_vis"/>
+      <geom type="mesh" class="carabiner_collision" pos="-0.0160368 0.0340087 0" quat="0.992208 0 0 -0.124594" mesh="link_bracket_00009" material="link_bracket_00009_material" name="carabiner_link_bracket_00009_col"/>
+      <!-- Link link_gate -->
+      <body name="link_gate" pos="0 -0 -0" quat="0 -0.965926 0.258819 -0">
+        <joint axis="0 0 1" name="gate_joint" type="hinge" range="-0.5235987755982888 0.36651914291881926" class="empty" frictionloss="0.0001" armature="0.0" solreflimit="0.01 1" solimplimit="0.95 0.99 0.001 0.5 2" margin="0.05"/>
+        <inertial pos="-0.0110922 -0 0" mass="0.0159537" fullinertia="5.734e-08 9.1682e-07 9.1682e-07 0 0 0"/>
+        <!-- Part link_gate -->
+        <geom type="mesh" class="carabiner_visual" pos="-0.0160368 0.0340087 -0" quat="0.992208 -0 -0 -0.124594" mesh="link_gate_00000" material="link_gate_00000_material" name="carabiner_link_gate_00000_vis"/>
+        <geom type="mesh" class="carabiner_collision" pos="-0.0160368 0.0340087 -0" quat="0.992208 -0 -0 -0.124594" mesh="link_gate_00000" material="link_gate_00000_material" name="carabiner_link_gate_00000_col"/>
+      </body>
+    </body>
+  </worldbody>
+  <asset>
+    <mesh file="link_gate_00000.stl"/>
+    <mesh file="coacd/link_bracket_00003.stl"/>
+    <mesh file="coacd/link_bracket_00008.stl"/>
+    <mesh file="coacd/link_bracket_00009.stl"/>
+    <mesh file="coacd/link_bracket_00000.stl"/>
+    <mesh file="coacd/link_bracket_00006.stl"/>
+    <mesh file="coacd/link_bracket_00004.stl"/>
+    <mesh file="coacd/link_bracket_00007.stl"/>
+    <mesh file="coacd/link_bracket_00002.stl"/>
+    <mesh file="coacd/link_bracket_00005.stl"/>
+    <mesh file="coacd/link_bracket_00001.stl"/>
+    <material name="link_gate_00000_material" rgba="0.972549 0.529412 0.00392157 1"/>
+    <material name="link_bracket_00000_material" rgba="0.972549 0.529412 0.00392157 1"/>
+    <material name="link_bracket_00001_material" rgba="0.972549 0.529412 0.00392157 1"/>
+    <material name="link_bracket_00002_material" rgba="0.972549 0.529412 0.00392157 1"/>
+    <material name="link_bracket_00003_material" rgba="0.972549 0.529412 0.00392157 1"/>
+    <material name="link_bracket_00004_material" rgba="0.972549 0.529412 0.00392157 1"/>
+    <material name="link_bracket_00005_material" rgba="0.972549 0.529412 0.00392157 1"/>
+    <material name="link_bracket_00006_material" rgba="0.972549 0.529412 0.00392157 1"/>
+    <material name="link_bracket_00007_material" rgba="0.972549 0.529412 0.00392157 1"/>
+    <material name="link_bracket_00008_material" rgba="0.972549 0.529412 0.00392157 1"/>
+    <material name="link_bracket_00009_material" rgba="0.972549 0.529412 0.00392157 1"/>
+  </asset>
+
+  <actuator>
+    <general name="gate" joint="gate_joint" ctrlrange="0 1" forcerange="-1 1" dynprm="0 0 0" gainprm="0 0 0" biastype="affine" biasprm="-0.0095 0 0"/>
+  </actuator>
+
+</mujoco>

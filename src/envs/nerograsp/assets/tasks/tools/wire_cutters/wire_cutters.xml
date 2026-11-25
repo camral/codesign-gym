@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<mujoco model="wire_cutters">
+  <compiler angle="radian" meshdir="parts" autolimits="true"/>
+
+  <default>
+    <default class="empty"/>
+    <default class="wire_cutters">
+      <default class="wire_cutters_visual">
+        <geom type="mesh" contype="0" conaffinity="0" group="2"/>
+      </default>
+      <default class="wire_cutters_collision">
+        <geom group="3"/>
+      </default>
+    </default>
+  </default>
+
+  <worldbody>
+    <body name="part_1" pos="-0.42 0.0 0.01" quat="0.707107 0 0 -0.707107" childclass="wire_cutters">
+      <freejoint name="part_1_freejoint"/>
+      <inertial pos="0.0201807 0.0323501 0.001125" mass="0.030088" fullinertia="2.62053e-05 9.62866e-06 3.58086e-05 -1.5253e-05 0 -0"/>
+      <geom type="mesh" class="wire_cutters_visual" pos="0 0 0" quat="0.707107 0 -0 -0.707107" mesh="part_1" material="part_1_material" name="wire_cutters_part_1_vis"/>
+      <geom type="mesh" class="wire_cutters_collision" pos="0 0 0" quat="0.707107 0 -0 -0.707107" mesh="part_1" material="part_1_material" name="wire_cutters_part_1_col"/>
+      <body name="part_1_2" pos="0 0 0" quat="0 -0.707107 0.707107 -0">
+        <joint axis="0 0 1" name="handles_joint" type="hinge" range="0.0 0.7853981633974483" class="empty" frictionloss="0.0001" armature="0.0" stiffness="0.655"/>
+        <inertial pos="-0.0323501 0.0201807 0.001125" mass="0.030088" fullinertia="9.62866e-06 2.62053e-05 3.58086e-05 1.5253e-05 0 0"/>
+        <geom type="mesh" class="wire_cutters_visual" pos="-0 0 -0" quat="1 0 0 0" mesh="part_1" material="part_1_material" name="wire_cutters_part_1_2_vis"/>
+        <geom type="mesh" class="wire_cutters_collision" pos="-0 0 -0" quat="1 0 0 0" mesh="part_1" material="part_1_material" name="wire_cutters_part_1_2_col"/>
+        <body name="wire_cutters_handle" pos="-0.0834722 0.0465408 0.001125" quat="1 0 -0 0">
+          <inertial pos="0.0192814 -0.00736584 -6.36e-10" mass="0.00590682" fullinertia="3.46607e-07 1.18938e-06 1.48974e-06 4.71024e-07 0 -0"/>
+          <geom type="mesh" class="wire_cutters_visual" pos="0.0834722 -0.0465408 -0.001125" quat="1 0 0 -0" mesh="handle" material="handle_material" name="wire_cutters_handle_vis"/>
+          <geom type="mesh" class="wire_cutters_collision" pos="0.0834722 -0.0465408 -0.001125" quat="1 0 0 -0" mesh="handle" material="handle_material" name="wire_cutters_handle_col"/>
+        </body>
+      </body>
+      <body name="wire_cutters_handle_2" pos="0.0465408 0.0834722 0.001125" quat="0.707107 0 -0 -0.707107">
+        <inertial pos="0.0192814 -0.00736584 -6.36e-10" mass="0.00590682" fullinertia="3.46607e-07 1.18938e-06 1.48974e-06 4.71024e-07 0 -0"/>
+        <geom type="mesh" class="wire_cutters_visual" pos="0.0834722 -0.0465408 -0.001125" quat="1 -0 0 0" mesh="handle" material="handle_material" name="wire_cutters_handle_2_vis"/>
+        <geom type="mesh" class="wire_cutters_collision" pos="0.0834722 -0.0465408 -0.001125" quat="1 -0 0 0" mesh="handle" material="handle_material" name="wire_cutters_handle_2_col"/>
+      </body>
+    </body>
+  </worldbody>
+  <asset>
+    <mesh file="handle.stl"/>
+    <mesh file="part_1.stl"/>
+    <material name="part_1_material" rgba="0.647059 0.647059 0.647059 1"/>
+    <material name="handle_material" rgba="0.866667 0.321569 0.156863 1"/>
+  </asset>
+  <actuator/>
+  <equality/>
+</mujoco>

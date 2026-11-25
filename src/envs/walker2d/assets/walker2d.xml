@@ -1,0 +1,100 @@
+<!-- Walker2D Model — co-design port for codesign-gym.
+
+    Vendored from Gymnasium (gymnasium/envs/mujoco/assets/walker2d.xml, MIT
+    License, © Farama Foundation / OpenAI) and adapted to the codesign-gym
+    "offsettable" contract. Walker2d is two Hopper legs, so it is ported exactly
+    as Hopper: thigh + leg of BOTH legs are designable (renamed
+    "<name>_offsettable_xz", deformable in the x/z plane); feet and the torso
+    root are left fixed.
+
+    Per leg:
+      - thigh: its geom already runs from the body origin (pos = dir*half); only
+        renamed. Its child (leg) is relocated to the thigh's far end.
+      - leg: the stock leg geom is centered on the body origin, so the leg body
+        frame is RELOCATED onto its hinge (an exact re-parameterization — body_pos,
+        joint pos, geom and foot child shift together so the rest geometry is
+        byte-identical to stock) and the geom re-authored as fromto="0 0 0 0 0 -0.5".
+      - foot: a rotated horizontal capsule straddling an offset ankle — not a single
+        origin-anchored link, so left fixed (only its body_pos is relocated).
+
+    inertiafromgeom stays true; RK4 integrator, contacts, friction and colours are
+    unchanged, so per-link inertia is recomputed by the offsettable kernel from the
+    deformed geometry and the base design reproduces stock Walker2d.
+-->
+<mujoco model="walker2d">
+  <compiler angle="degree" inertiafromgeom="true"/>
+  <default>
+    <joint armature="0.01" damping=".1" limited="true"/>
+    <geom conaffinity="0" condim="3" contype="1" density="1000" friction=".7 .1 .1" rgba="0.8 0.6 .4 1"/>
+  </default>
+  <option integrator="RK4" timestep="0.002" iterations="30"/>
+  <visual>
+    <headlight diffuse="0.52 0.54 0.58" ambient="0.32 0.34 0.38" specular="0.12 0.12 0.12"/>
+    <rgba haze="0.55 0.68 0.82 1"/>
+    <quality shadowsize="2048"/>
+    <map znear="0.01"/>
+  </visual>
+  <!-- The floor is enlarged for rendering; pin the stock extent so the camera clip planes stay as before. -->
+  <statistic extent="8" center="0 0 0"/>
+  <worldbody>
+    <light directional="true" diffuse="0.82 0.84 0.86" specular="0.28 0.28 0.30" pos="2 -3 5" dir="-0.35 0.5 -1" castshadow="true"/>
+    <light directional="true" diffuse="0.32 0.36 0.42" specular="0.06 0.06 0.08" pos="-3 2 4" dir="0.5 -0.35 -1" castshadow="false"/>
+    <geom conaffinity="1" condim="3" name="floor" pos="0 0 0" rgba="1 1 1 1" size="1000 1000 40" type="plane" material="MatPlane"/>
+    <body name="torso" pos="0 0 1.25">
+      <camera name="track" mode="trackcom" pos="0 -3 -0.25" xyaxes="1 0 0 0 0 1"/>
+      <joint armature="0" axis="1 0 0" damping="0" limited="false" name="rootx" pos="0 0 -1.25" stiffness="0" type="slide"/>
+      <joint armature="0" axis="0 0 1" damping="0" limited="false" name="rootz" pos="0 0 -1.25" ref="1.25" stiffness="0" type="slide"/>
+      <joint armature="0" axis="0 1 0" damping="0" limited="false" name="rooty" pos="0 0 0" stiffness="0" type="hinge"/>
+      <!-- Torso split onto a hub root so its length is designable (see hopper). -->
+      <body name="torso_upper_offsettable_z" pos="0 0 0">
+        <geom friction="0.9" name="torso_upper_geom" rgba="0.86 0.66 0.42 1" fromto="0 0 0 0 0 0.19999999999999996" size="0.050000000000000003" type="capsule"/>
+      </body>
+      <body name="torso_lower_offsettable_z" pos="0 0 0">
+        <geom friction="0.9" name="torso_lower_geom" rgba="0.76 0.56 0.36 1" fromto="0 0 0 0 0 -0.19999999999999996" size="0.050000000000000003" type="capsule"/>
+      <body name="thigh_offsettable_xz" pos="0 0 -0.19999999999999996">
+        <joint axis="0 -1 0" name="thigh_joint" pos="0 0 0" range="-150 0" type="hinge"/>
+        <geom friction="0.9" pos="0 0 -0.22500000000000009" name="thigh_geom" rgba="0.86 0.58 0.34 1" size="0.050000000000000003 0.22500000000000003" type="capsule"/>
+        <body name="leg_offsettable_xz" pos="0 0 -0.45000000000000001">
+          <joint axis="0 -1 0" name="leg_joint" pos="0 0 0" range="-150 0" type="hinge"/>
+          <geom friction="0.9" fromto="0 0 0 0 0 -0.5" name="leg_geom" rgba="0.88 0.54 0.46 1" size="0.040000000000000001" type="capsule"/>
+          <body name="foot" pos="0.20000000000000001 0 -0.59999999999999998">
+            <joint axis="0 -1 0" name="foot_joint" pos="-0.20000000000000001 0 0.10000000000000001" range="-45 45" type="hinge"/>
+            <!-- Foot capsule (ankle->toe) as a designable child from the ankle. -->
+            <body name="foot_toe_offsettable_x" pos="-0.20000000000000001 0 0.10000000000000001">
+              <geom friction="0.9" fromto="0 0 0 0.2 0 0" name="foot_toe_geom" rgba="0.80 0.42 0.34 1" size="0.059999999999999998" type="capsule"/>
+            </body>
+          </body>
+        </body>
+      </body>
+      <body name="thigh_left_offsettable_xz" pos="0 0 -0.19999999999999996">
+        <joint axis="0 -1 0" name="thigh_left_joint" pos="0 0 0" range="-150 0" type="hinge"/>
+        <geom friction="0.9" name="thigh_left_geom" rgba="0.72 0.34 0.52 1" size="0.050000000000000003 0.22500000000000003" pos="0 0 -0.22500000000000009" type="capsule"/>
+        <body name="leg_left_offsettable_xz" pos="0 0 -0.45000000000000001">
+          <joint axis="0 -1 0" name="leg_left_joint" pos="0 0 0" range="-150 0" type="hinge"/>
+          <geom friction="0.9" fromto="0 0 0 0 0 -0.5" name="leg_left_geom" rgba="0.84 0.44 0.62 1" size="0.040000000000000001" type="capsule"/>
+          <body name="foot_left" pos="0.20000000000000001 0 -0.59999999999999998">
+            <joint axis="0 -1 0" name="foot_left_joint" pos="-0.20000000000000001 0 0.10000000000000001" range="-45 45" type="hinge"/>
+            <body name="foot_left_toe_offsettable_x" pos="-0.20000000000000001 0 0.10000000000000001">
+              <geom friction="1.9" fromto="0 0 0 0.2 0 0" name="foot_left_toe_geom" rgba="0.62 0.26 0.44 1" size="0.059999999999999998" type="capsule"/>
+            </body>
+          </body>
+        </body>
+      </body>
+      </body>
+    </body>
+  </worldbody>
+  <actuator>
+    <motor ctrllimited="true" ctrlrange="-1.0 1.0" gear="100" joint="thigh_joint"/>
+    <motor ctrllimited="true" ctrlrange="-1.0 1.0" gear="100" joint="leg_joint"/>
+    <motor ctrllimited="true" ctrlrange="-1.0 1.0" gear="100" joint="foot_joint"/>
+    <motor ctrllimited="true" ctrlrange="-1.0 1.0" gear="100" joint="thigh_left_joint"/>
+    <motor ctrllimited="true" ctrlrange="-1.0 1.0" gear="100" joint="leg_left_joint"/>
+    <motor ctrllimited="true" ctrlrange="-1.0 1.0" gear="100" joint="foot_left_joint"/>
+  </actuator>
+    <asset>
+        <texture type="skybox" builtin="gradient" rgb1="0.72 0.84 0.96" rgb2="0.44 0.60 0.78" width="512" height="512"/>
+        <texture builtin="flat" height="1278" mark="cross" markrgb="1 1 1" name="texgeom" random="0.01" rgb1="0.8 0.6 0.4" rgb2="0.8 0.6 0.4" type="cube" width="127"/>
+        <texture name="texplane" type="2d" builtin="checker" rgb1="0.20 0.30 0.40" rgb2="0.15 0.24 0.34" mark="edge" markrgb="0.26 0.36 0.46" width="256" height="256"/>
+        <material name="MatPlane" texture="texplane" texuniform="true" texrepeat="1.2 1.2" reflectance="0.06" specular="0.12" shininess="0.25"/>
+    </asset>
+</mujoco>

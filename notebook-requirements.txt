@@ -1,0 +1,30 @@
+# Minimal dependency set for the interactive tutorial notebooks:
+#   - notebooks/rl-setup.ipynb
+#   - notebooks/morphhand_tutorial.ipynb
+#   - notebooks/nerotools_tutorial.ipynb
+#
+# Includes the exact packages needed from both codesign-gym and codesign-baselines,
+# using the mujoco_warp fork required by the MorphHand environments and a compatible
+# non-4.0 MuJoCo release.
+
+gymnasium>=1.2.3
+numpy>=2.0
+scipy>=1.10
+# Pinned to codesign-baselines' tested release: torch 2.15 fails CUDA-graph capture during FastTD3 training.
+torch==2.13.0
+tensordict>=0.7.2
+# The mujoco_warp fork does not track upstream MuJoCo 4.0 releases; pin to the tested 3.x release.
+mujoco==3.14.0
+mujoco-warp @ git+https://github.com/y-tsvetkov/mujoco_warp.git@integration_gjk_fix
+warp-lang>=1.16
+# Structural Affinity (CBD-SA codec in codesign-baselines/fasttd3_cmaes). The README setup also
+# clones it into codesign-baselines/structural-affinity after codesign-baselines is cloned.
+structural-affinity @ git+https://github.com/camral/structural-affinity.git
+# NeroGrasp-Tools: mesh loading/validation (trimesh) and ray-based thickness checks (rtree).
+trimesh>=4
+rtree>=1.4
+matplotlib>=3.6
+# ImageFont.load_default(size=...) was added in Pillow 10.1.
+pillow>=10.1
+tensorboard>=2.14
+ipykernel>=6

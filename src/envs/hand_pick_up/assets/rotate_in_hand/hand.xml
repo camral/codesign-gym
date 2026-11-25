@@ -1,0 +1,361 @@
+<mujoco model="hand">
+  <compiler angle="radian" autolimits="true" />
+  <default>
+    <default class="humanoid_hand">
+      <joint axis="0 1 0" armature="0.04" damping="0.07" limited="true" />
+      <velocity kv="9" forcerange="-1.5 1.5" ctrlrange="-2 2" />
+      <geom group="2" type="box" density="800" material="hand_dorsal" />
+      <default class="palm">
+        <geom size="0.0204 0.0565 0.0475" pos="-0.0093 0 -0.0475" material="hand_dorsal" />
+      </default>
+      <default class="link">
+        <geom group="3" contype="3" conaffinity="2" condim="4" friction="0.8 0.01 0.001" solref="0.015 1" solimp="0.95 0.995 0.001 0.5 2" priority="100" />
+        <default class="base">
+          <geom size="0.0098 0.01375 0.0082" pos="0 0 0.0082" />
+          <joint axis="0 0 1" range="-0.47 0.47" />
+          <default class="thumb_base">
+            <geom size="0.0179 0.017 0.02275" pos="-0.0179 0.009 0.0145" />
+            <joint axis="1 0 0" range="0.263 1.396" />
+          </default>
+        </default>
+        <default class="proximal">
+          <geom size="0.00200 0.01374 0.02700" pos="-0.00780 0.00000 0.02700" />
+          <joint pos="0.0098 0 0" range="0 1.61" />
+          <default class="thumb_proximal">
+            <geom size="0.0098 0.01374 0.00885" pos="0 0 0.00885" />
+            <joint pos="0 0 0" axis="0 0 -1" range="0 1.163" />
+          </default>
+        </default>
+        <default class="middle">
+          <geom size="0.00200 0.01373 0.01920" pos="-0.00780 0.00000 0.01920" />
+          <joint pos="0.0098 0 0" range="0 1.709" />
+          <default class="thumb_middle">
+            <geom size="0.00200 0.01373 0.02570" pos="-0.00780 0.00000 0.02570" />
+            <joint range="0 1.644" />
+          </default>
+        </default>
+        <default class="distal">
+          <geom size="0.0098 0.01374 0.008" pos="0 0 0.008" />
+          <joint pos="0.0098 0 0" range="0 1.618" />
+          <default class="finger_tip">
+            <geom size="0.00200 0.01374 0.01450" pos="-0.00780 0.00000 0.01450" />
+          </default>
+          <default class="thumb_distal">
+            <geom size="0.0098 0.01374 0.025" pos="0 0 0.025" />
+            <joint range="0 1.719" />
+            <default class="thumb_tip">
+              <geom size="0.00200 0.01374 0.03250" pos="-0.00780 0.00000 0.03250" />
+            </default>
+          </default>
+        </default>
+      </default>
+      <default class="knuckle">
+        <geom group="2" type="cylinder" size="0.0046 0.0138" pos="0.0098 0 0" quat="0.7071068 0.7071068 0 0" contype="0" conaffinity="0" density="0" material="hand_joint" />
+      </default>
+      <default class="wedge">
+        <geom type="mesh" mesh="wedge" group="3" contype="0" conaffinity="0" density="0" material="hand_joint" />
+        <default class="child_wedge">
+          <geom mesh="child_wedge" pos="0.0098 0 0" quat="0 1 0 0" />
+        </default>
+      </default>
+      <default class="skeleton">
+        <geom type="capsule" size="0.005" group="3" contype="0" conaffinity="0" />
+      </default>
+      <default class="hfield">
+        <geom material="hand_pad" group="2" type="hfield" contype="1" conaffinity="0" condim="4" friction="0.8 0.01 0.001" solref="0.015 1" solimp="0.95 0.995 0.001 0.5 2" priority="100" />
+        <default class="palm_hfield">
+          <geom hfield="palm" />
+        </default>
+        <default class="tip_x_hfield">
+          <geom pos="-0.00540 0.00000 0.01450" quat="0.707107 0 0.707107 0" />
+        </default>
+        <default class="th_tip_x_hfield">
+          <geom hfield="th_tip_x" pos="-0.00540 0.00000 0.03250" quat="0.707107 0 0.707107 0" />
+        </default>
+        <default class="proximal_x_hfield">
+          <geom pos="-0.00540 0.00000 0.02700" quat="0.707107 0 0.707107 0" />
+        </default>
+        <default class="middle_x_hfield">
+          <geom pos="-0.00540 0.00000 0.01920" quat="0.707107 0 0.707107 0" />
+        </default>
+        <default class="thumb_proximal_x_hfield">
+          <geom pos="0.0099 0 0.00885" quat="0.707107 0 0.707107 0" />
+        </default>
+        <default class="thumb_middle_x_hfield">
+          <geom pos="-0.00540 0.00000 0.02570" quat="0.707107 0 0.707107 0" />
+        </default>
+      </default>
+    </default>
+  </default>
+  <asset>
+    <material name="hand_shell" rgba="0.40 0.44 0.50 1" metallic="0.32" roughness="0.40" specular="0.36" />
+    <material name="hand_dorsal" rgba="0.26 0.29 0.34 1" metallic="0.34" roughness="0.44" specular="0.32" />
+    <material name="hand_arch" rgba="0.30 0.33 0.38 1" metallic="0.38" roughness="0.38" specular="0.38" />
+    <material name="hand_joint" rgba="0.46 0.50 0.56 1" metallic="0.58" roughness="0.28" specular="0.52" />
+    <material name="hand_wrist" rgba="0.28 0.31 0.36 1" metallic="0.34" roughness="0.42" specular="0.34" />
+    <material name="hand_pad" rgba="0.18 0.20 0.24 1" metallic="0.04" roughness="0.68" specular="0.14" />
+    <material name="hand_rib" rgba="0.56 0.59 0.63 1" metallic="0.45" roughness="0.35" specular="0.45" />
+    <material name="hand_bridge" rgba="0.30 0.33 0.39 1" metallic="0.44" roughness="0.36" specular="0.42" />
+    <mesh name="palm_shell" file="meshes/palm_shell.obj" />
+    <mesh name="dorsal_bridge" file="meshes/dorsal_bridge.obj" />
+    <mesh name="knuckle_arch" file="meshes/knuckle_arch.obj" />
+    <mesh name="wrist_shell" file="meshes/wrist_shell.obj" />
+    <mesh name="base_shell" file="meshes/base_shell.obj" />
+    <mesh name="prox_shell" file="meshes/prox_shell.obj" />
+    <mesh name="med_shell" file="meshes/med_shell.obj" />
+    <mesh name="tip_shell" file="meshes/tip_shell.obj" />
+    <mesh name="th_prox_shell" file="meshes/th_prox_shell.obj" />
+    <mesh name="th_med_shell" file="meshes/th_med_shell.obj" />
+    <mesh name="th_tip_shell" file="meshes/th_tip_shell.obj" />
+    <mesh name="wedge" scale="0.99 0.99 0.99" vertex="0 -0.0137 0  0 0.0137 0  -0.0196 -0.0137 0  -0.0196 0.0137 0  -0.019223 -0.0137 0.0038238  -0.019223 0.0137 0.0038238  -0.018108 -0.0137 0.0075006  -0.018108 0.0137 0.0075006  -0.016297 -0.0137 0.010889  -0.016297 0.0137 0.010889  -0.013859 -0.0137 0.013859  -0.013859 0.0137 0.013859  -0.010889 -0.0137 0.016297  -0.010889 0.0137 0.016297  -0.0075006 -0.0137 0.018108  -0.0075006 0.0137 0.018108  -0.0038238 -0.0137 0.019223  -0.0038238 0.0137 0.019223  0 -0.0137 0.0196  0 0.0137 0.0196" />
+    <mesh name="child_wedge" scale="0.98 0.98 0.98" vertex="0 -0.0137 0  0 0.0137 0  -0.0196 -0.0137 0  -0.0196 0.0137 0  -0.019223 -0.0137 0.0038238  -0.019223 0.0137 0.0038238  -0.018108 -0.0137 0.0075006  -0.018108 0.0137 0.0075006  -0.016297 -0.0137 0.010889  -0.016297 0.0137 0.010889  -0.013859 -0.0137 0.013859  -0.013859 0.0137 0.013859  -0.010889 -0.0137 0.016297  -0.010889 0.0137 0.016297  -0.0075006 -0.0137 0.018108  -0.0075006 0.0137 0.018108  -0.0038238 -0.0137 0.019223  -0.0038238 0.0137 0.019223  0 -0.0137 0.0196  0 0.0137 0.0196" />
+    <hfield name="palm" nrow="10" ncol="8" size="0.046 0.055 0.02 0.01" />
+    <hfield name="rf_proximal_x" nrow="3" ncol="5" size="0.02610 0.01374 0.02700 0.00180" />
+    <hfield name="rf_middle_x" nrow="3" ncol="4" size="0.01830 0.01374 0.02700 0.00180" />
+    <hfield name="rf_tip_x" nrow="3" ncol="3" size="0.01320 0.01374 0.02700 0.00180" />
+    <hfield name="mf_proximal_x" nrow="3" ncol="5" size="0.02610 0.01374 0.02700 0.00180" />
+    <hfield name="mf_middle_x" nrow="3" ncol="4" size="0.01830 0.01374 0.02700 0.00180" />
+    <hfield name="mf_tip_x" nrow="3" ncol="3" size="0.01320 0.01374 0.02700 0.00180" />
+    <hfield name="ff_proximal_x" nrow="3" ncol="5" size="0.02610 0.01374 0.02700 0.00180" />
+    <hfield name="ff_middle_x" nrow="3" ncol="4" size="0.01830 0.01374 0.02700 0.00180" />
+    <hfield name="ff_tip_x" nrow="3" ncol="3" size="0.01320 0.01374 0.02700 0.00180" />
+    <hfield name="th_proximal_x" nrow="3" ncol="5" size="0.02480 0.01374 0.02700 0.00180" />
+    <hfield name="th_tip_x" nrow="3" ncol="6" size="0.03120 0.01374 0.02700 0.00180" />
+  </asset>
+  <worldbody>
+    <body name="hand_base" gravcomp="1" childclass="humanoid_hand">
+      <joint name="x" type="slide" axis="1 0 0" range="-0.5 0.5" armature="0.08" />
+      <joint name="y" type="slide" axis="0 1 0" range="-0.5 0.5" armature="0.08" />
+      <joint name="z" type="slide" axis="0 0 1" range="-0.5 0.5" armature="0.08" />
+      <geom type="sphere" pos="0 0 -0.01" size="0.03" group="3" contype="0" conaffinity="0" />
+      <geom group="2" contype="0" conaffinity="0" density="0" name="fa_iso_base" type="cylinder" fromto="-0.13600 0.00000 0.01100 -0.11200 0.00000 0.01100" size="0.039" material="hand_dorsal" />
+      <geom group="2" contype="0" conaffinity="0" density="0" name="fa_iso_ring" type="cylinder" fromto="-0.11300 0.00000 0.01100 -0.10400 0.00000 0.01100" size="0.0405" material="hand_joint" />
+      <geom group="2" contype="0" conaffinity="0" density="0" name="fa_housing" type="cylinder" fromto="-0.10500 0.00000 0.01100 -0.06600 0.00000 0.01100" size="0.033" material="hand_shell" />
+      <geom group="2" contype="0" conaffinity="0" density="0" name="fa_accent_top" type="box" pos="-0.08600 0.00000 0.04250" size="0.016 0.012 0.003" material="hand_dorsal" />
+      <geom group="2" contype="0" conaffinity="0" density="0" name="fa_accent_bot" type="box" pos="-0.08600 0.00000 -0.02050" size="0.016 0.012 0.003" material="hand_dorsal" />
+      <geom group="2" contype="0" conaffinity="0" density="0" name="fa_roll_collar" type="cylinder" fromto="-0.06700 0.00000 0.01100 -0.05100 0.00000 0.01100" size="0.028" material="hand_bridge" />
+      <geom group="2" contype="0" conaffinity="0" density="0" name="fa_roll_band" type="cylinder" fromto="-0.05700 0.00000 0.01100 -0.05100 0.00000 0.01100" size="0.0295" material="hand_joint" />
+      <geom group="2" contype="0" conaffinity="0" density="0" name="fa_yoke_base" type="box" pos="-0.04700 0.00000 0.01100" size="0.006 0.030 0.014" material="hand_dorsal" />
+      <geom group="2" contype="0" conaffinity="0" density="0" name="fa_yoke_l" type="box" pos="-0.03100 0.02700 0.01100" size="0.016 0.0045 0.0125" material="hand_shell" />
+      <geom group="2" contype="0" conaffinity="0" density="0" name="fa_yoke_r" type="box" pos="-0.03100 -0.02700 0.01100" size="0.016 0.0045 0.0125" material="hand_shell" />
+      <geom group="2" contype="0" conaffinity="0" density="0" name="fa_trunnion" type="cylinder" fromto="-0.01800 -0.03400 0.01100 -0.01800 0.03400 0.01100" size="0.0085" material="hand_joint" />
+      <body name="palm" gravcomp="1" pos="0.1 0 0.011">
+        <joint name="roll" axis="1 0 0" range="-1.5 1.5" pos="-0.118 0 0" armature="0.15" />
+        <joint name="pitch" range="-0.5 0.5" pos="-0.118 0 0" armature="0.15" />
+        <joint name="yaw" axis="0 0 1" range="-0.5 0.5" pos="-0.118 0 0" armature="0.15" />
+        <geom name="palm_vis" type="mesh" mesh="palm_shell" pos="0 0 0" group="2" contype="0" conaffinity="0" density="0" material="hand_shell" />
+        <geom name="knuckle_arch_vis" type="mesh" mesh="knuckle_arch" pos="0 0 0" group="2" contype="0" conaffinity="0" density="0" material="hand_arch" />
+        <geom name="dorsal_bay" type="mesh" mesh="dorsal_bridge" pos="0 0 0" group="2" contype="0" conaffinity="0" density="0" material="hand_dorsal" />
+        <geom class="palm" size="0.04751 0.05651 0.02541" pos="-0.0475 0 -0.015" group="3" conaffinity="2" condim="4" friction="0.8 0.01 0.001" solref="0.015 1" solimp="0.95 0.995 0.001 0.5 2" priority="100" />
+        <geom class="palm_hfield" pos="-0.0475 0 0.01" />
+        <body name="rf_skeleton_offsettable_equ0" gravcomp="1" pos="-0.001542 0 0">
+          <geom class="skeleton" fromto="0 0 0 0 -0.0435 0" />
+          <body name="rf_base_offsettable_y_equ1" gravcomp="1" pos="0 -0.0435 0" euler="1.5707963 1.4835298 1.5707963">
+            <joint name="rfj0" class="base" />
+            <geom class="base" />
+            <geom type="mesh" mesh="base_shell" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+            <geom type="box" size="0.00190 0.01040 0.00820" pos="-0.00750 0 0.00820" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+            <geom type="box" size="0.00865 0.01040 0.00180" pos="0.00115 0 0.01460" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+            <geom class="wedge" pos="0.0098 0 0.0164" />
+            <body name="rf_proximal_offsettable_y_equ1" gravcomp="1" pos="0 0 0.0164">
+              <joint name="rfj1" class="proximal" />
+              <geom class="proximal" />
+              <geom type="mesh" mesh="prox_shell" group="2" contype="0" conaffinity="0" density="0" material="hand_shell" />
+              <geom type="box" size="0.00190 0.01040 0.02700" pos="-0.00750 0 0.02700" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+              <geom type="box" size="0.00865 0.01040 0.00180" pos="0.00115 0 0.05220" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+              <geom type="box" size="0.00865 0.01040 0.00180" pos="0.00115 0 0.00180" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+              <geom class="proximal_x_hfield" hfield="rf_proximal_x" />
+              <geom class="knuckle" />
+              <geom class="child_wedge" />
+              <geom class="wedge" pos="0.0098 0 0.054" />
+              <body name="rf_middle_offsettable_y_equ1" gravcomp="1" pos="0 0 0.054">
+                <joint name="rfj2" class="middle" />
+                <geom class="middle" />
+                <geom type="mesh" mesh="med_shell" group="2" contype="0" conaffinity="0" density="0" material="hand_shell" />
+                <geom type="box" size="0.00190 0.01040 0.01920" pos="-0.00750 0 0.01920" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+                <geom type="box" size="0.00865 0.01040 0.00180" pos="0.00115 0 0.03660" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+                <geom type="box" size="0.00865 0.01040 0.00180" pos="0.00115 0 0.00180" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+                <geom class="middle_x_hfield" hfield="rf_middle_x" />
+                <geom class="knuckle" />
+                <geom class="child_wedge" />
+                <geom class="wedge" pos="0.0098 0 0.0384" />
+                <body name="rf_tip_offsettable_y_equ1" gravcomp="1" pos="0 0 0.0384">
+                  <joint name="rfj3" class="distal" />
+                  <geom class="finger_tip" />
+                  <geom type="mesh" mesh="tip_shell" group="2" contype="0" conaffinity="0" density="0" material="hand_shell" />
+                  <geom type="box" size="0.00190 0.01040 0.01425" pos="-0.00750 0 0.01425" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+                  <geom type="box" size="0.00865 0.01040 0.00180" pos="0.00115 0 0.00180" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+                  <geom class="knuckle" />
+                  <geom class="child_wedge" />
+                  <geom class="tip_x_hfield" hfield="rf_tip_x" />
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+        <body name="mf_base_offsettable_y_equ1" gravcomp="1" pos="0.0007 0 0" euler="-3.1415927 1.5707963 0">
+          <joint name="mfj0" class="base" />
+          <geom class="base" />
+          <geom type="mesh" mesh="base_shell" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+          <geom type="box" size="0.00190 0.01040 0.00820" pos="-0.00750 0 0.00820" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+          <geom type="box" size="0.00865 0.01040 0.00180" pos="0.00115 0 0.01460" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+          <geom class="wedge" pos="0.0098 0 0.0164" />
+          <body name="mf_proximal_offsettable_y_equ1" gravcomp="1" pos="0 0 0.0164">
+            <joint name="mfj1" class="proximal" />
+            <geom class="proximal" />
+            <geom type="mesh" mesh="prox_shell" group="2" contype="0" conaffinity="0" density="0" material="hand_shell" />
+            <geom type="box" size="0.00190 0.01040 0.02700" pos="-0.00750 0 0.02700" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+            <geom type="box" size="0.00865 0.01040 0.00180" pos="0.00115 0 0.05220" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+            <geom type="box" size="0.00865 0.01040 0.00180" pos="0.00115 0 0.00180" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+            <geom class="proximal_x_hfield" hfield="mf_proximal_x" />
+            <geom class="knuckle" />
+            <geom class="child_wedge" />
+            <geom class="wedge" pos="0.0098 0 0.054" />
+            <body name="mf_middle_offsettable_y_equ1" gravcomp="1" pos="0 0 0.054">
+              <joint name="mfj2" class="middle" />
+              <geom class="middle" />
+              <geom type="mesh" mesh="med_shell" group="2" contype="0" conaffinity="0" density="0" material="hand_shell" />
+              <geom type="box" size="0.00190 0.01040 0.01920" pos="-0.00750 0 0.01920" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+              <geom type="box" size="0.00865 0.01040 0.00180" pos="0.00115 0 0.03660" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+              <geom type="box" size="0.00865 0.01040 0.00180" pos="0.00115 0 0.00180" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+              <geom class="middle_x_hfield" hfield="mf_middle_x" />
+              <geom class="knuckle" />
+              <geom class="child_wedge" />
+              <geom class="wedge" pos="0.0098 0 0.0384" />
+              <body name="mf_tip_offsettable_y_equ1" gravcomp="1" pos="0 0 0.0384">
+                <joint name="mfj3" class="distal" />
+                <geom class="finger_tip" />
+                <geom type="mesh" mesh="tip_shell" group="2" contype="0" conaffinity="0" density="0" material="hand_shell" />
+                <geom type="box" size="0.00190 0.01040 0.01425" pos="-0.00750 0 0.01425" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+                <geom type="box" size="0.00865 0.01040 0.00180" pos="0.00115 0 0.00180" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+                <geom class="knuckle" />
+                <geom class="child_wedge" />
+                <geom class="tip_x_hfield" hfield="mf_tip_x" />
+              </body>
+            </body>
+          </body>
+        </body>
+        <body name="ff_skeleton_offsettable_equ0" gravcomp="1" pos="-0.001542 0 0">
+          <geom class="skeleton" fromto="0 0 0 0 0.0435 0" />
+          <body name="ff_base_offsettable_y_equ1" gravcomp="1" pos="0 0.0435 0" euler="-1.5707963 1.4835298 -1.5707963">
+            <joint name="ffj0" class="base" />
+            <geom class="base" />
+            <geom type="mesh" mesh="base_shell" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+            <geom type="box" size="0.00190 0.01040 0.00820" pos="-0.00750 0 0.00820" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+            <geom type="box" size="0.00865 0.01040 0.00180" pos="0.00115 0 0.01460" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+            <geom class="wedge" pos="0.0098 0 0.0164" />
+            <body name="ff_proximal_offsettable_y_equ1" gravcomp="1" pos="0 0 0.0164">
+              <joint name="ffj1" class="proximal" />
+              <geom class="proximal" />
+              <geom type="mesh" mesh="prox_shell" group="2" contype="0" conaffinity="0" density="0" material="hand_shell" />
+              <geom type="box" size="0.00190 0.01040 0.02700" pos="-0.00750 0 0.02700" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+              <geom type="box" size="0.00865 0.01040 0.00180" pos="0.00115 0 0.05220" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+              <geom type="box" size="0.00865 0.01040 0.00180" pos="0.00115 0 0.00180" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+              <geom class="proximal_x_hfield" hfield="ff_proximal_x" />
+              <geom class="knuckle" />
+              <geom class="child_wedge" />
+              <geom class="wedge" pos="0.0098 0 0.054" />
+              <body name="ff_middle_offsettable_y_equ1" gravcomp="1" pos="0 0 0.054">
+                <joint name="ffj2" class="middle" />
+                <geom class="middle" />
+                <geom type="mesh" mesh="med_shell" group="2" contype="0" conaffinity="0" density="0" material="hand_shell" />
+                <geom type="box" size="0.00190 0.01040 0.01920" pos="-0.00750 0 0.01920" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+                <geom type="box" size="0.00865 0.01040 0.00180" pos="0.00115 0 0.03660" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+                <geom type="box" size="0.00865 0.01040 0.00180" pos="0.00115 0 0.00180" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+                <geom class="middle_x_hfield" hfield="ff_middle_x" />
+                <geom class="knuckle" />
+                <geom class="child_wedge" />
+                <geom class="wedge" pos="0.0098 0 0.0384" />
+                <body name="ff_tip_offsettable_y_equ1" gravcomp="1" pos="0 0 0.0384">
+                  <joint name="ffj3" class="distal" />
+                  <geom class="finger_tip" />
+                  <geom type="mesh" mesh="tip_shell" group="2" contype="0" conaffinity="0" density="0" material="hand_shell" />
+                  <geom type="box" size="0.00190 0.01040 0.01425" pos="-0.00750 0 0.01425" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+                  <geom type="box" size="0.00865 0.01040 0.00180" pos="0.00115 0 0.00180" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+                  <geom class="knuckle" />
+                  <geom class="child_wedge" />
+                  <geom class="tip_x_hfield" hfield="ff_tip_x" />
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+        <body name="th_proximal_offsettable_y_equ2" gravcomp="1" pos="-0.07636182 0.05672793 0.0" euler="-1.5707963 -0.0872677 0">
+          <joint name="thj0" class="thumb_base" pos="0 0 0" />
+          <joint name="thj1" class="thumb_proximal" />
+          <geom class="thumb_proximal" />
+          <geom type="mesh" mesh="th_prox_shell" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+          <geom type="box" size="0.00190 0.01040 0.00885" pos="-0.00750 0 0.00885" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+          <geom type="box" size="0.00865 0.01040 0.00180" pos="0.00115 0 0.01590" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+          <geom type="sphere" size="0.02" pos="0 0 0" group="3" contype="2" conaffinity="2" />
+          <geom class="wedge" pos="0.0098 0 0.0177" />
+          <body name="th_middle_offsettable_y_equ2" gravcomp="1" pos="0 0 0.0177">
+            <joint name="thj2" class="thumb_middle" />
+            <geom class="thumb_middle" />
+            <geom type="mesh" mesh="th_med_shell" group="2" contype="0" conaffinity="0" density="0" material="hand_shell" />
+            <geom type="box" size="0.00190 0.01040 0.02570" pos="-0.00750 0 0.02570" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+            <geom type="box" size="0.00865 0.01040 0.00180" pos="0.00115 0 0.04960" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+            <geom type="box" size="0.00865 0.01040 0.00180" pos="0.00115 0 0.00180" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+            <geom class="thumb_middle_x_hfield" hfield="th_proximal_x" />
+            <geom class="knuckle" />
+            <geom class="child_wedge" />
+            <geom class="wedge" pos="0.0098 0 0.0514" />
+            <body name="th_tip_offsettable_y_equ2" gravcomp="1" pos="0 0 0.0514">
+              <joint name="thj3" class="thumb_distal" />
+              <geom class="thumb_tip" />
+              <geom type="mesh" mesh="th_tip_shell" group="2" contype="0" conaffinity="0" density="0" material="hand_shell" />
+              <geom type="box" size="0.00190 0.01040 0.03225" pos="-0.00750 0 0.03225" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+              <geom type="box" size="0.00865 0.01040 0.00180" pos="0.00115 0 0.00180" group="2" contype="0" conaffinity="0" density="0" material="hand_bridge" />
+              <geom class="knuckle" />
+              <geom class="child_wedge" />
+              <geom class="th_tip_x_hfield" />
+            </body>
+          </body>
+        </body>
+        <body name="wrist_adapter" pos="-0.118 0 0" gravcomp="1">
+          <inertial pos="0 0 0" mass="1e-6" diaginertia="1e-9 1e-9 1e-9" />
+          <geom group="2" contype="0" conaffinity="0" density="0" name="ws_hub" type="sphere" pos="0 0 0" size="0.0185" material="hand_dorsal" />
+          <geom group="2" contype="0" conaffinity="0" density="0" name="ws_pin_z" type="cylinder" fromto="0 0 -0.020 0 0 0.017" size="0.0070" material="hand_joint" />
+          <geom group="2" contype="0" conaffinity="0" density="0" name="ws_stem" type="cylinder" fromto="0 0 0 0.0330 0 -0.0170" size="0.0110" material="hand_bridge" />
+          <geom group="2" contype="0" conaffinity="0" density="0" name="ws_palm_plate" type="box" pos="0.0300 0 -0.018" size="0.007 0.030 0.013" material="hand_dorsal" />
+        </body>
+      </body>
+    </body>
+  </worldbody>
+  <contact>
+    <exclude body1="palm" body2="ff_base_offsettable_y_equ1" />
+    <exclude body1="palm" body2="mf_base_offsettable_y_equ1" />
+    <exclude body1="palm" body2="rf_base_offsettable_y_equ1" />
+    <exclude body1="palm" body2="th_proximal_offsettable_y_equ2" />
+    <exclude body1="palm" body2="th_middle_offsettable_y_equ2" />
+  </contact>
+  <actuator>
+    <velocity name="x" joint="x" class="humanoid_hand" kv="25" forcerange="-15 15" ctrlrange="-0.15 0.15" />
+    <velocity name="y" joint="y" class="humanoid_hand" kv="25" forcerange="-15 15" ctrlrange="-0.15 0.15" />
+    <velocity name="z" joint="z" class="humanoid_hand" kv="25" forcerange="-15 15" ctrlrange="-0.15 0.15" />
+    <velocity name="pitch" joint="pitch" class="humanoid_hand" kv="20" forcerange="-4 4" ctrlrange="-2 2" />
+    <velocity name="yaw" joint="yaw" class="humanoid_hand" kv="20" forcerange="-4 4" ctrlrange="-2 2" />
+    <velocity name="roll" joint="roll" class="humanoid_hand" kv="20" forcerange="-4 4" ctrlrange="-2 2" />
+    <velocity name="ffa0" joint="ffj0" class="base" />
+    <velocity name="ffa1" joint="ffj1" class="proximal" />
+    <velocity name="ffa2" joint="ffj2" class="middle" />
+    <velocity name="ffa3" joint="ffj3" class="distal" />
+    <velocity name="mfa0" joint="mfj0" class="base" />
+    <velocity name="mfa1" joint="mfj1" class="proximal" />
+    <velocity name="mfa2" joint="mfj2" class="middle" />
+    <velocity name="mfa3" joint="mfj3" class="distal" />
+    <velocity name="rfa0" joint="rfj0" class="base" />
+    <velocity name="rfa1" joint="rfj1" class="proximal" />
+    <velocity name="rfa2" joint="rfj2" class="middle" />
+    <velocity name="rfa3" joint="rfj3" class="distal" />
+    <velocity name="tha0" joint="thj0" class="thumb_base" />
+    <velocity name="tha1" joint="thj1" class="thumb_proximal" />
+    <velocity name="tha2" joint="thj2" class="thumb_middle" />
+    <velocity name="tha3" joint="thj3" class="thumb_distal" />
+  </actuator>
+  <keyframe>
+    <key name="zero" qpos="0 0 0  0 0 0 0 0. 0. 0.  0 0. 0. 0.  0 0. 0. 0.  0. 0 0. 0." />
+    <key name="init_pos" qpos="0 0 0  0 0 0  0 0.2 0.5 0.8  0 0.2 0.5 0.8  0 0.2 0.5 0.8  0.725 1.2 0.2 0.4" />
+    <key name="curled" qpos="0 0 0  0 0 0  0 0.95 0.51 1.18  0 0.95 0.51 1.18  0 0.95 0.51 1.18  0.3 1.1 0.8 0.6" />
+  </keyframe>
+</mujoco>
