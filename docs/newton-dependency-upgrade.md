@@ -20,6 +20,11 @@ it. Walker2d's native-model mirror follows the same rule. Per-world masses,
 inertias, constraint constants, and design-reset behavior remain covered by the
 existing environment tests.
 
+The live Soft Walker recording adapter now supplies the metric-column metadata
+used by the interactive UI and updates its displacement readout from the live
+geometry. Without that metadata the viewer raised `AttributeError` during reset
+when the UI was active.
+
 ## Reproduce the checked environment
 
 Validation uses Linux x86_64, Python 3.12.13, an RTX 5090, and NVIDIA driver CUDA
@@ -59,6 +64,8 @@ If necessary, reinstall the matching `mujoco`, `mujoco-core`, and
 - Seven real OpenGL checks pass: all five Soft Walker geometries, the terrain
   editor, and material/actuator morphology rendering. These instantiate Newton
   directly, so a Pillow fallback cannot make them pass.
+- The interactive viewer also passes a reset/render/step check under Xvfb;
+  that check and the recording-contract tests pass together (10 tests).
 - The focused Warp MPM, JAX spring, and viewer-contract selection passes 46
   tests. CPU partial-reset and JAX continuum/beam mechanics checks pass 51
   tests, including all five native Soft Walker physics families.
@@ -80,6 +87,9 @@ pytest tests/test_mujoco_device.py -k test_factory_cuda_reset_and_step
 pytest tests/test_newton_solver.py
 CODESIGN_TEST_NEWTON_RENDER=1 PYGLET_HEADLESS=1 LIBGL_ALWAYS_SOFTWARE=1 \
   pytest tests/test_soft_walker_newton_render.py
+WARP_TEST_DEVICE=cuda:0 LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a pytest \
+  tests/test_soft_walker_vector.py::test_human_newton_viewer_refreshes_during_rollout \
+  tests/soft_walker/test_viewer_recording_contracts.py
 WARP_TEST_DEVICE=cuda:0 pytest tests/soft_walker/test_warp_native.py \
   tests/soft_walker/test_m2_spring_paths.py \
   tests/soft_walker/test_viewer_recording_contracts.py
