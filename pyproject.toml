@@ -31,9 +31,10 @@ dependencies = [
     "python-microgrid>=1.4",
     "pandas>=1.5",
     "mink>=1.3",
-    "mujoco>=4.0",
-    "mujoco-warp>=4.0",
-    "warp-lang>=1.16",
+    # Match the pinned Newton revision's simulator dependencies.
+    "mujoco~=4.0.1",
+    "mujoco-warp~=4.0.1",
+    "warp-lang>=1.19.0",
     "torch>=2.12",
     "pymeshlab>=2025.7",
     "trimesh>=4",
@@ -43,11 +44,15 @@ dependencies = [
     "qpsolvers[quadprog]>=4.12",
     "mobile-env>=2.0",
     "jumanji>=1.0",
-    "jax>=0.9.0.1",
+    # Jumanji imports tree directly; recent Chex releases no longer provide it transitively.
+    "dm-tree>=0.1.9",
+    "jax>=0.10.0",
     # SoftWalker's default 3D frames (envs/soft_walker/render3d.py over viewer/view_newton.py). Headless Linux needs
     # EGL (see src/envs/soft_walker/README.md); without an OpenGL context render() falls back to the 2D Pillow view.
-    "newton==0.2.0",
-    "pyglet>=2.1",
+    # Newton 1.8 requires MuJoCo 3.17; this development revision supports 4.0.1.
+    "newton @ git+https://github.com/newton-physics/newton.git@b3528c6cc5d8fc261f59963890084abebce86cfc",
+    "pyglet>=2.1.6,<3",
+    "imgui-bundle>=1.92.0",
 ]
 
 [project.optional-dependencies]
@@ -63,9 +68,9 @@ showdown = [
     "pokemon-codesign-env @ git+https://github.com/camral/pokemon-codesign-env.git@a4a17e0",
 ]
 # The F1TENTH vehicle co-design env wraps f1tenth_gym_jax (+ its git-only jax_pf LiDAR
-# ray-marcher). Both are pulled from git. NOTE: f1tenth_gym_jax pins jax<0.8, which conflicts
-# with jumanji's jax>=0.10; the code runs fine on the newer jax, so install these with
-# `--no-deps` (or a uv override) so they coexist with the base jax pin.
+# ray-marcher). Both are pulled from git. Their older JAX bounds conflict with the
+# base package; the historical --no-deps setup is not validated against this stack.
+# See docs/newton-dependency-upgrade.md for the resolution limits.
 f1tenth = [
     "jax-pf @ git+https://github.com/hzheng40/jax_pf",
     "f1tenth_gym_jax @ git+https://github.com/f1tenth/f1tenth_gym_jax",
@@ -75,11 +80,13 @@ f1tenth = [
 # the spread check of contacts 3 and 4 scales with the pad's size, and EPA's side-wall fix-up
 # reports bogus deep contacts for box objects against a pad, which launch them. This extra swaps
 # in mujoco_warp with both fixed: the fork's `integration_gjk_fix` branch (upstream main plus
-# those two fixes), tracked by branch name, not commit. Every env in that environment then runs
-# on it (all of them run unchanged there). With uv, pass `--no-sources`.
+# those two fixes), tracked by branch name, not commit. Its current version is below
+# MuJoCo Warp 4, so this extra (and all) cannot resolve with the base stack until the
+# fork is updated. The separate legacy notebook setup is documented in
+# docs/newton-dependency-upgrade.md.
 morphhand = ["mujoco-warp @ git+https://github.com/y-tsvetkov/mujoco_warp.git@integration_gjk_fix"]
 # ruff and mypy check the soft_walker package only (see [tool.ruff] and mypy-soft.ini).
-dev = ["pytest>=7", "pytest-cov", "ruff==0.17.0", "mypy==2.4.0"]
+dev = ["pytest>=7", "pytest-cov", "ruff==0.17.0", "mypy==2.4.0", "gymnasium[mujoco]>=1.2.3"]
 # notebooks/: PPO logs to TensorBoard; the notebook needs a Jupyter kernel.
 tutorial = ["tensorboard>=2.14", "ipykernel>=6"]
 all = ["codesign-gym[showdown,morphhand,dev,tutorial]"]
