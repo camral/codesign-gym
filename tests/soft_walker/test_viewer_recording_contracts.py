@@ -40,6 +40,20 @@ def test_compatibility_imports_and_coordinate_handedness() -> None:
     np.testing.assert_array_equal(basis[2], np.cross(basis[0], basis[1]))
 
 
+def test_live_recording_exposes_displacement_to_viewer_ui() -> None:
+    from envs.soft_walker import config as C, embodiment as E
+    from envs.soft_walker.render3d import _live_recording
+
+    props = C.base_props("spring")
+    bundle = C.build_bundle("spring", props, "float64")
+    design = E.from_cells(props, 2, "float64")
+    rec = _live_recording(view_newton, "spring", bundle.fields, design, None)
+    np.testing.assert_array_equal(rec.displacements_x, [0.0])
+    # The UI reads the semantic column, including when the live adapter updates it.
+    rec.metrics[0, rec.metric_indices["distance_x"]] = 0.03
+    np.testing.assert_array_equal(rec.displacements_x, [0.03])
+
+
 @pytest.mark.parametrize("failure", ["solver", "time", "positions"])
 def test_only_valid_saved_prefix_is_rendered(tmp_path: Path, failure: str) -> None:
     directory = saved_recording(tmp_path / "run")

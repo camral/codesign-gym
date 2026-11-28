@@ -19,8 +19,8 @@ from types import SimpleNamespace
 
 import numpy as np
 
-from . import config as C
-from . import embodiment as E
+from . import config as C, embodiment as E
+from .contracts.metrics import METRIC_DX, METRIC_STATUS, METRIC_TIME
 
 WIDTH, HEIGHT = 1280, 800
 FLOOR = ((.2, .3, .4), (.3, .4, .5))  # checker pair
@@ -123,6 +123,7 @@ class NewtonRenderer:
         rec.positions[0] = np.asarray(positions, float)
         rec.world[0] = V.world_coordinates(rec.positions[0])
         self.studio.track = float(rec.world[0, rec.active, 0].mean()) - self.origin_x
+        rec.metrics[0, METRIC_DX] = self.studio.track
         self.studio.render(0)
         if not capture:
             return None
@@ -146,6 +147,7 @@ def _live_recording(V, driver: str, fields: dict, design: np.ndarray, terrain: d
     rec.arrays = {k: v for k, v in topo.items() if k not in ("active", "torso")}
     rec.reference, rec.active, rec.torso = ref, topo["active"], topo["torso"]
     rec.positions, rec.metrics, rec.times = ref[None].copy(), np.zeros((1, 7)), np.zeros(1)
+    rec.metric_indices = {"time": METRIC_TIME, "distance_x": METRIC_DX, "status": METRIC_STATUS}
     rec.terrain = None if terrain is None else {k: np.asarray(v).tolist() for k, v in terrain.items()}
     rec.driver, rec.dim = driver, ref.shape[1]
     rec.protocol, rec.assessment, rec.flight_assessment, rec.objective = {}, {}, {}, {}
@@ -222,7 +224,8 @@ def _checkers(xs: np.ndarray, zs: np.ndarray) -> tuple[list, list]:
     cells = ([], [])
     for i in range(len(xs) - 1):
         for j in range(len(zs) - 1):
-            a = i * len(zs) + j; b = a + len(zs)
+            a = i * len(zs) + j
+            b = a + len(zs)
             parity = (math.floor((xs[i] + xs[i + 1]) / (2 * CHECK)) + math.floor((zs[j] + zs[j + 1]) / (2 * CHECK))) % 2
             cells[parity].extend((a, b + 1, b, a, a + 1, b + 1))
     return cells

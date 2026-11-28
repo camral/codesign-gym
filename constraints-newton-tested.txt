@@ -1,0 +1,30 @@
+# Regression versions on Linux x86_64, Python 3.12.13, 27 November 2026.
+# Use with: uv pip install -e '.[dev]' -c constraints-newton-tested.txt
+# This constrains the tested numerical stack; it is not a full transitive lock.
+# The exact Newton source revision is declared in pyproject.toml.
+mujoco==4.0.1
+mujoco-core==4.0.1
+mujoco-studio==4.0.1
+mujoco-warp==4.0.1
+warp-lang==1.19.0
+jax==0.10.0
+jaxlib==0.10.0
+numpy==2.3.5
+scipy==1.17.0
+gymnasium==1.2.3
+torch==2.13.0
+pyglet==2.1.19
+imgui-bundle==1.93.0
+jumanji==1.1.2
+dm-tree==0.1.10
+mobile-env==2.1.0
+python-microgrid==1.4.1
+pandas==3.1.1
+mink==1.4.0
+pytest==9.2.0
+diffrax==0.7.2
+equinox==0.13.8
+lineax==0.1.0
+optimistix==0.1.0
+jaxtyping==0.3.11
+wadler-lindig==0.1.7

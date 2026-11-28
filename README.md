@@ -25,9 +25,12 @@ source .venv/bin/activate
 git clone https://github.com/camral/codesign-gym
 # for SSH: git clone git@github.com:camral/codesign-gym.git
 cd codesign-gym
-uv pip install -r notebook-requirements.txt --no-sources
-uv pip install --no-deps -e .
+uv pip install -e .
 ```
+
+The base install uses MuJoCo 4.0.1 and a pinned Newton development revision.
+See the [dependency upgrade record](docs/newton-dependency-upgrade.md) for tested
+versions, regression commands, and the separate legacy notebook/fork setup.
 
 ⚠️🚫🐍 **Instructions may not work with Conda, so do not use it.**
 
@@ -137,7 +140,7 @@ Most environments run on the base install. A few need an extra step:
 
 | Environments | Extra step |
 |---|---|
-| Shape-shifting Hand (`RotateInHand-*`, `HandPickUp-*`) | `pip install -e './codesign-gym[morphhand]'` (with uv, add `--no-sources`). |
+| Shape-shifting Hand (`RotateInHand-*`, `HandPickUp-*`) | Included in the base install with upstream MuJoCo Warp. The optional collision-fix fork currently conflicts with MuJoCo 4; see the [dependency record](docs/newton-dependency-upgrade.md). |
 | Racing (`Racing-*`) | `pip install --no-deps jax-pf@git+https://github.com/hzheng40/jax_pf f1tenth_gym_jax@git+https://github.com/f1tenth/f1tenth_gym_jax` |
 | JAX on an NVIDIA GPU (Racing, Warehouse) | `codesign-gym-install-jax-gpu` |
 | Pokémon (`Pokenv-*`) | Install Node.js 22 or later, then do the steps in [Pokémon](#pokémon). |

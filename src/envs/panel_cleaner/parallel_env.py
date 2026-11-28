@@ -201,18 +201,20 @@ class ParallelMujocoEnv:
                 naconmax=naconmax)
             for attr in self.PER_WORLD_MODEL_FIELDS + self.DERIVED_PER_WORLD_FIELDS:
                 self._make_field_per_world(attr)
-            # Per world, so set_const gives each design its own solver tolerance scale
-            mi = self.gpu_model.stat.meaninertia
-            self.gpu_model.stat.meaninertia = wp.array(
-                np.full(self.num_envs, float(mi.numpy()[0]), np.float32),
-                dtype=mi.dtype, device=mi.device)
+            # Older MuJoCo Warp forks keep a shared model statistic; 4.0
+            # computes its inertia scale per world from the current mass matrix.
+            if hasattr(self.gpu_model, "stat"):
+                mi = self.gpu_model.stat.meaninertia
+                self.gpu_model.stat.meaninertia = wp.array(
+                    np.full(self.num_envs, float(mi.numpy()[0]), np.float32),
+                    dtype=mi.dtype, device=mi.device)
             mjw.set_const(self.gpu_model, self.gpu_data)
             mjw.forward(self.gpu_model, self.gpu_data)
             wp.synchronize()
 
     def _refresh_constants(self) -> None:
         """Recompute the mass-derived constants (``body_subtreemass``,
-        ``*_invweight0``, ``stat.meaninertia``) for every world's current design."""
+        ``*_invweight0``) for every world's current design."""
         with self._wp_scope():
             mjw.set_const(self.gpu_model, self.gpu_data)
 

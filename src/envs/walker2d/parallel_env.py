@@ -350,19 +350,19 @@ class ParallelMujocoEnv:
                 self.m, nworld=self.num_envs, nconmax=nconmax, njmax=njmax)
             for attr in PER_ENV_MODEL_ATTRS:
                 self._make_field_per_world(attr)
-            # One solver-tolerance scale per world, so set_const can give each
-            # design its own (a shared one is filled from world 0 only).
-            mi = self.gpu_model.stat.meaninertia
-            self.gpu_model.stat.meaninertia = wp.array(np.full(self.num_envs, float(mi.numpy()[0]), np.float32), dtype=mi.dtype, device=mi.device)
+            # Older MuJoCo Warp forks keep a shared model statistic; 4.0
+            # computes its inertia scale per world from the current mass matrix.
+            if hasattr(self.gpu_model, "stat"):
+                mi = self.gpu_model.stat.meaninertia
+                self.gpu_model.stat.meaninertia = wp.array(np.full(self.num_envs, float(mi.numpy()[0]), np.float32), dtype=mi.dtype, device=mi.device)
             mjw.set_const(self.gpu_model, self.gpu_data)
             mjw.forward(self.gpu_model, self.gpu_data)
             wp.synchronize()
 
     def _refresh_constants(self) -> None:
         """Recompute what MuJoCo derives from masses at compile time --
-        ``body_subtreemass``, ``body/dof_invweight0`` (constraint softness) and
-        ``stat.meaninertia`` (solver tolerance scale) -- for every world's
-        current geometry. The deform writes masses and inertias but not these,
+        ``body_subtreemass`` and ``body/dof_invweight0`` (constraint softness)
+        for every world's current geometry. The deform writes masses and inertias but not these,
         so call it after a reset that changed designs. State is kept (set_const
         restores qpos); allocates, so never inside the step graph."""
         with self._wp_scope():
@@ -520,13 +520,15 @@ class ParallelMujocoEnv:
             src = getattr(gm, name, None)
             if src is not None and src.shape[0] >= self.num_envs:
                 cache[name] = src.numpy()
-        meaninertia = gm.stat.meaninertia.numpy()
+        stat = getattr(gm, "stat", None)
+        meaninertia = None if stat is None else stat.meaninertia.numpy()
         for w in worlds:
             w = int(w)
             v = self.variants[w]
             for name, rows in cache.items():
                 getattr(v, name)[:] = rows[w].reshape(getattr(v, name).shape)
-            v.stat.meaninertia = float(meaninertia[w] if meaninertia.shape[0] > 1 else meaninertia[0])
+            if meaninertia is not None:
+                v.stat.meaninertia = float(meaninertia[w] if meaninertia.shape[0] > 1 else meaninertia[0])
             _refresh_bvh(v)
 
     def _run_step_program(self) -> None:

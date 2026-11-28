@@ -152,6 +152,10 @@ repository README). `requirements-tested.txt` records the versions the included 
 were produced with (Python 3.13, jax 0.9.0.1); it is a provenance record, not an
 install step.
 
+The [current dependency upgrade record](../../../docs/newton-dependency-upgrade.md)
+documents the Newton development / Warp 1.19 / JAX 0.10 checks. The older
+`requirements-tested.txt` remains the provenance of the included historical runs.
+
 The native Warp backend supports MPM in 2D/3D, springs, Hex8 FEM, and beams.
 See [the integration update](docs/WARP_INTEGRATION_UPDATE.md) for commands,
 the source layout, and numerical validation scope. The latest gradient repairs
