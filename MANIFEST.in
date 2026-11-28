@@ -1,4 +1,6 @@
 include README.md
 include LICENSE
 include mypy-soft.ini
+include constraints-newton-tested.txt
+include docs/newton-dependency-upgrade.md
 recursive-include tests *.py *.json

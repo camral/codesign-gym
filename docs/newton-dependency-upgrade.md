@@ -71,6 +71,9 @@ If necessary, reinstall the matching `mujoco`, `mujoco-core`, and
   tests, including all five native Soft Walker physics families.
 - The registered Soft Walker vector suite passes 83 tests with one interactive
   display skip, using `WARP_TEST_DEVICE=cuda:0` for its physics cases.
+- All 20 native partial-reset tests also pass on CUDA, covering spring, beam,
+  FEM, MPM2D, and MPM3D. The first run took 1481 seconds, dominated by FEM's
+  first CUDA compilation; this is not a warm simulation throughput measurement.
 - Warehouse and the shared seeding/reset selection pass 68 tests, with two
   optional-environment skips, after adding `dm-tree`.
 - The broad existing environment suite produced 676 passes and 26 skips.
@@ -96,6 +99,7 @@ WARP_TEST_DEVICE=cuda:0 pytest tests/soft_walker/test_warp_native.py \
 WARP_TEST_DEVICE=cpu pytest tests/soft_walker/test_warp_native_partial_reset.py \
   tests/soft_walker/test_m2_continuum.py tests/soft_walker/test_m3_terrain_beam.py
 WARP_TEST_DEVICE=cuda:0 pytest tests/test_soft_walker_vector.py
+WARP_TEST_DEVICE=cuda:0 pytest tests/soft_walker/test_warp_native_partial_reset.py
 pytest tests/test_robot_warehouse.py tests/test_robot_warehouse_vector.py \
   tests/test_seeding.py tests/test_step_before_reset.py
 pytest tests --ignore=tests/soft_walker --ignore=tests/test_soft_walker_vector.py \
